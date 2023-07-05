@@ -4,17 +4,11 @@ const userPwdInput = document.querySelector('#userPwd');
 const userPwdChkInput = document.querySelector('#userPwdChk');
 const userNameInput = document.querySelector('#userName');
 const emailIdInput = document.querySelector('#userEmail');
-// const emailDomainInput = document.querySelector('#emailDomain');
 const userTelInput = document.querySelector('#userTel');
 
 const signinButton = document.querySelector('#signinButton');     // 회원가입 버튼
 const idDuplicateButton = document.querySelector('#idDuplicateButton');       // 아이디 중복체크 버튼
 let idValidation = false;       // 아이디 중복체크 상태
-
-const idAvailable = document.querySelector('#idAvailable');
-const idNotAvailable = document.querySelector('#idNotAvilable');
-
-
 
 // 회원가입 유효성 검사
 const regexCheck = () => {
@@ -23,7 +17,6 @@ const regexCheck = () => {
     const userPwdChk = userPwdChkInput.value;
     const userName = userNameInput.value;
     const emailId = emailIdInput.value;
-    // const emailDomain = emailDomainInput.value;
     const userTel = userTelInput.value;
 
     // 정규표현식
@@ -38,8 +31,7 @@ const regexCheck = () => {
     const pwdDoubleCheck = (userPwd == userPwdChk);
     const emailCheck = emailRegex.test(emailId);
     const telCheck = telRegex.test(userTel);
-    // const userEmail = `${emailId}@${emailDomain}`;      // 이메일 아이디와 도메인 합치기
-    // const emailCheck = emailRegex.test(userEmail);
+
 
     // 유효성 검사
     if (userId == "") {
@@ -119,18 +111,6 @@ const idDuplicateCheck = () => {
     idNotAvailable;
     
 }
-
-
-// 셀렉트 박스 이메일 도메인 변경
-// const changeEmail = () => {
-//     const emailDomain = document.querySelector('#emailDomain');
-//     const emailOpt = document.querySelector('#emailSelect');
-
-//     let idx = emailOpt.options.selectedIndex;
-//     let domain = emailOpt.options[idx].value;
-    
-//     emailDomain.value = domain;
-// }
 
 
 idDuplicateButton.addEventListener("click", idDuplicateCheck);     
