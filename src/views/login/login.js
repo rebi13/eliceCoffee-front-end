@@ -1,11 +1,11 @@
 document.getElementById('submitButton').addEventListener('click', function (event) {
-  event.preventDefault(); // 폼의 기본 동작인 페이지 새로고침을 방지합니다.
+  event.preventDefault();
 
-  // 이메일과 비밀번호 입력란의 값을 가져옵니다.
-  var userId = document.querySelector('#idInput').value;
-  var password = document.querySelector('#passwordInput').value;
+  // 이메일과 비밀번호 입력란의 값을 변수에 저장
+  let userId = document.querySelector('#idInput').value;
+  let password = document.querySelector('#passwordInput').value;
 
-  // 아이디, 비밀번호, 이메일, 전화번호의 정규표현식을 설정
+  // 아이디, 비밀번호 정규표현식을 설정
   const idRegex = /^[a-z0-9]{8,12}$/;
   // 아이디 : 영소문자 및 숫자만 포함. (8~12자)
   const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
@@ -24,15 +24,18 @@ document.getElementById('submitButton').addEventListener('click', function (even
     return false;
   }
 
-  // 엔터키를 눌러도 로그인이 가능하게 한다.
-  document.addEventListener('keyup', function (event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      document.getElementById('submitButton').click();
-    }
-  });
 
   // 입력 값이 조건에 맞을 경우, 로그인 처리를 진행합니다.
   // 로그인 처리를 완료한 후 메인 페이지로 이동합니다.
-  window.location.href = 'home.html';
+  window.location.href = '/front-end/src/views/home/home.html';
+});
+
+// 엔터키를 눌러도 로그인이 가능하게 한다.
+let form = document.querySelector('#form');
+
+form.addEventListener('submit', function(event) {
+  if (event.key === 13) {
+    event.preventDefault();
+    document.getElementById('submitButton').click();
+  }
 });
