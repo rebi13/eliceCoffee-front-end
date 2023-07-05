@@ -73,12 +73,12 @@ document.addEventListener("DOMContentLoaded", function() {
 window.addEventListener('load', function () {
     // 상품 수량 변경 시 총 가격 업데이트
     function updateTotalPrice() {
-      var productItems = document.querySelectorAll('.product-item');
-      var totalAmount = 0;
+      const productItems = document.querySelectorAll('.product-item');
+      let totalAmount = 0;
       for (var i = 0; i < productItems.length; i++) {
-        var quantity = parseInt(productItems[i].querySelector('input[type="text"]').value);
-        var price = parseInt(productItems[i].querySelector('.price').innerText.replace(/[^0-9]/g, ''));
-        var total = quantity * price;
+        let quantity = parseInt(productItems[i].querySelector('input[type="text"]').value);
+        let price = parseInt(productItems[i].querySelector('.price').innerText.replace(/[^0-9]/g, ''));
+        let total = quantity * price;
         productItems[i].querySelector('.total-price').innerText = total.toLocaleString() + '원';
         totalAmount += total;
       }
@@ -90,10 +90,10 @@ window.addEventListener('load', function () {
   
     // 상품 수량 변경 
     function handleQuantityChange() {
-      var quantityInputs = document.querySelectorAll('.product-item input[type="text"]');
+    const quantityInputs = document.querySelectorAll('.product-item input[type="text"]');
       for (var i = 0; i < quantityInputs.length; i++) {
         quantityInputs[i].addEventListener('input', function () {
-          var quantity = parseInt(this.value);
+          let quantity = parseInt(this.value);
           if (isNaN(quantity) || quantity < 0) {
             this.value = 1;
           }
@@ -105,11 +105,11 @@ window.addEventListener('load', function () {
   
     // 상품 수량 증가 버튼 클릭 
     function handleQuantityIncrement() {
-      var incrementButtons = document.querySelectorAll('.product-item button:nth-child(3)');
+    const incrementButtons = document.querySelectorAll('.product-item button:nth-child(3)');
       for (var i = 0; i < incrementButtons.length; i++) {
         incrementButtons[i].addEventListener('click', function () {
-          var quantityInput = this.parentNode.querySelector('input[type="text"]');
-          var quantity = parseInt(quantityInput.value);
+          let quantityInput = this.parentNode.querySelector('input[type="text"]');
+          let quantity = parseInt(quantityInput.value);
           quantityInput.value = quantity + 1;
           updateTotalPrice();
         });
@@ -118,11 +118,11 @@ window.addEventListener('load', function () {
   
     // 상품 수량 감소 버튼 클릭 
     function handleQuantityDecrement() {
-      var decrementButtons = document.querySelectorAll('.product-item button:nth-child(1)');
+      const decrementButtons = document.querySelectorAll('.product-item button:nth-child(1)');
       for (var i = 0; i < decrementButtons.length; i++) {
         decrementButtons[i].addEventListener('click', function () {
-          var quantityInput = this.parentNode.querySelector('input[type="text"]');
-          var quantity = parseInt(quantityInput.value);
+          let quantityInput = this.parentNode.querySelector('input[type="text"]');
+          let quantity = parseInt(quantityInput.value);
           if (quantity > 1) {
             quantityInput.value = quantity - 1;
             updateTotalPrice();
@@ -133,19 +133,19 @@ window.addEventListener('load', function () {
   
     // 배송비 업데이트
     function updateShippingFee(totalAmount) {
-      var shippingFeeElement = document.getElementById('total-shipping-fee');
-      var shippingFee = totalAmount >= 50000 ? 0 : 3000;
+      const shippingFeeElement = document.getElementById('total-shipping-fee');
+      let shippingFee = totalAmount >= 50000 ? 0 : 3000;
       shippingFeeElement.innerText = shippingFee.toLocaleString() + '원';
     }
   
     // 총 결제금액 업데이트 (상품금액 + 배송비)
     function updateTotalPriceWithShippingFee() {
-      var totalAmountElement = document.getElementById('total-amount');
-      var shippingFeeElement = document.getElementById('total-shipping-fee');
-      var totalPriceElement = document.getElementById('total-price');
-      var totalAmount = parseInt(totalAmountElement.innerText.replace(/[^0-9]/g, ''));
-      var shippingFee = parseInt(shippingFeeElement.innerText.replace(/[^0-9]/g, ''));
-      var totalPrice = totalAmount + shippingFee;
+      const totalAmountElement = document.getElementById('total-amount');
+      const shippingFeeElement = document.getElementById('total-shipping-fee');
+      const totalPriceElement = document.getElementById('total-price');
+      const totalAmount = parseInt(totalAmountElement.innerText.replace(/[^0-9]/g, ''));
+      const shippingFee = parseInt(shippingFeeElement.innerText.replace(/[^0-9]/g, ''));
+      const totalPrice = totalAmount + shippingFee;
       totalPriceElement.innerText = totalPrice.toLocaleString() + '원';
     }
 
