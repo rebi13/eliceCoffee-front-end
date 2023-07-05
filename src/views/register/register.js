@@ -77,7 +77,7 @@ const regexCheck = () => {
     }
     if(!emailCheck) {
         alert('올바른 이메일 형식이 아닙니다. 다시 확인해주세요.');
-        emailDomainInput.focus();
+        emailIdInput.focus();
         return;
     }
 
