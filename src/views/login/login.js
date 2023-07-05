@@ -26,7 +26,7 @@ document.getElementById('submitButton').addEventListener('click', function (even
   document.addEventListener('keyup', function (event) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      login();
+      document.getElementById('submitButton').click();
     }
   });
 
