@@ -107,3 +107,7 @@ blockquote {
     width: 120px;
     border-radius: 100px;
 }
+
+.btn:disabled, .btn:disabled:hover {
+    background-color: #cccccc;
+}
