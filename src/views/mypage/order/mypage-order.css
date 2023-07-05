@@ -111,3 +111,12 @@ blockquote {
 .btn:disabled, .btn:disabled:hover {
     background-color: #cccccc;
 }
+
+.table tbody tr td {
+    vertical-align: middle;
+}
+
+.table tbody tr td:first-child img {
+    width: 80px;
+    height: 80px;
+}
