@@ -84,6 +84,20 @@ nav li {
   margin: 0 10px;
 }
 
+
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown.active .dropdown-menu {
+  display: block;
+}
+
 nav a {
   text-decoration: none;
   color: #fff;
