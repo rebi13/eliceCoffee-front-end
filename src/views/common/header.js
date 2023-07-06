@@ -1,7 +1,7 @@
 const header = document.querySelector('#header');
 
 const head = `
-<h1>Elice Coffee</h1>
+
 
 <nav class="py-2 bg-light border-bottom">
   <div class="container d-flex flex-wrap">
