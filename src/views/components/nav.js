@@ -1,11 +1,11 @@
 const nav = `
     <nav>
         <ul>
-            <li><a href="#">HOME</a></li>
-            <li><a href="#">SHOP</a></li>
-            <li><a href="#">PAGES</a></li>
-            <li><a href="#">BLOG</a></li>
-            <li><a href="#">ELEMENTS</a></li>
+            <li><a href="#">국가별 커피 목록</a></li>
+            <li><a href="#">산미별</a></li>
+            <li><a href="#">커피 용품</a></li>
+            <li><a href="#">이달의 특가</a></li>
+            <li><a href="#">이벤트</a></li>
         </ul>
     </nav>
 `;
