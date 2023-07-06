@@ -11,11 +11,11 @@ const nav = `
             </li>
 
             <li class="dropdown">
-                <a class="dropdown-toggle" href="#">블랜드</a>
+                <a href="#">블랜드</a>
             </li>
 
             <li class="dropdown">
-            <a class="dropdown-toggle" href="#">드립</a>
+                <a href="#">드립</a>
             </li>
 
             <li class="dropdown">
