@@ -1,10 +1,6 @@
 const nav = `
     <nav>
-        <ul style="
-            display: flex; 
-            justify-content: 
-            space-evenly; width: 100%"
-        >
+        <ul>
             <li><a href="#">HOME</a></li>
             <li><a href="#">SHOP</a></li>
             <li><a href="#">PAGES</a></li>

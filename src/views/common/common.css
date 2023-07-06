@@ -1,31 +1,96 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500');
 
 header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
-  background-color: beige;
+  background-color: #7a665c;
   height: 50px;
 }
 
-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 15px;
-  background-color: beige;
-  height: 50px;
+header h1 {
+  margin: 0;
+  font-size: 20px;
+  color: #fff;
+}
+
+header a {
+  text-decoration: none;
+  color: #fff;
+  margin-left: 10px;
+}
+
+header a div {
+  padding-top: 10px;
+}
+
+
+a:hover {
+  text-decoration: underline;
 }
 
 nav {
+  position: fixed;
+  display: flex;
+  margin-top: 50px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  background-color: #7a665c;
+  height: 50px;
+  width: 100%;
+}
+
+nav ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 0;
+}
+
+nav li {
+  margin: 0 10px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* 본문 스타일 */
+section {
+  padding-top: 80px; /* 헤더와 내비게이션의 높이만큼 여백 추가 */
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
-  background-color: beige;
+  background-color: #7A665C;
   height: 50px;
-  width: 100%;
+  color: #000;
+}
+
+.copyright {
+  color: whitesmoke;
+}
+
+.f-info {
+  text-align: center;
+  margin-top: 10px;
+  font-size: small;
+  color: whitesmoke;
 }
 
 body {
