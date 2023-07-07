@@ -1,8 +1,10 @@
 import { makeTemplate } from "../../common/template.js"
+import {setParseStringAmount} from '../../common/common.js';
 
 const API_URL = "http://localhost:3000/api/v1/products";
 
-const content = `
+
+let content = `
     <!-- product list -->
     <section class="page-header">
         <div class="container">
@@ -47,19 +49,20 @@ const content = `
                             </div>
                         </div>
                         <div class="product-content">
-                            <h4><a href="product-single.html">Brazil Cerrado</a></h4>
+                            <h4><a href="product-single.html">{name}</a></h4>
                             <p class="taste">
-                                #적절한 바디와 너티함<br>
-                                #고소하고 무난한 맛을 찾으시는 분
+                                {discription}
                             </p>
-                            <p class="price">₩3,400</p>
+                            <p class="price">{price}</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <div class="product-item">
                         <div class="product-thumb">
-                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-santos.jpg" alt="product-img" />
+                            <span class="bage">Best</span>
+                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
                             <div class="preview-meta">
                                 <ul>
                                     <!-- <li>
@@ -78,19 +81,20 @@ const content = `
                             </div>
                         </div>
                         <div class="product-content">
-                            <h4><a href="product-single.html">Brazil Santos</a></h4>
+                            <h4><a href="product-single.html">{name}</a></h4>
                             <p class="taste">
-                                #은은한 산미와 너티의 마일드함<br>
-                                #부드럽고 마일드한 맛을 찾으시는 분
+                                {discription}
                             </p>
-                            <p class="price">₩3,200</p>
+                            <p class="price">{price}</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <div class="product-item">
                         <div class="product-thumb">
-                            <img class="img-responsive" src="../../../assets/thumbnail/colombia-madellin.jpg" alt="product-img" />
+                            <span class="bage">Best</span>
+                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
                             <div class="preview-meta">
                                 <ul>
                                     <!-- <li>
@@ -109,107 +113,16 @@ const content = `
                             </div>
                         </div>
                         <div class="product-content">
-                            <h4><a href="product-single.html">Colombia Madellin</a></h4>
+                            <h4><a href="product-single.html">{name}</a></h4>
                             <p class="taste">
-                                #호두의 고소함, 코코아의 단맛<br>
-                                #기분 좋은 바디감과 단맛을 원하시는 분
+                                {discription}
                             </p>
-                            <p class="price">₩4,200</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img class="img-responsive" src="../../../assets/thumbnail/colombia-supremo.jpg" alt="product-img" />
-                            <div class="preview-meta">
-                                <ul>
-                                    <!-- <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li> -->
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product-single.html">Colombia Supremo</a></h4>
-                            <p class="taste">
-                                #은은한 허브향과 단맛의 조화<br>
-                                #어디에나 어울리는 커피를 찾으시는 분
-                            </p>
-                            <p class="price">₩4,500</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img class="img-responsive" src="../../../assets/thumbnail/costarica-tarrazu.jpg" alt="product-img" />
-                            <div class="preview-meta">
-                                <ul>
-                                    <!-- <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li> -->
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product-single.html">Costarica Tarrazu</a></h4>
-                            <p class="taste">
-                                #<br>
-                                #
-                            </p>
-                            <p class="price">₩4,500</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <img class="img-responsive" src="../../../assets/thumbnail/elsalvador-apaneca.jpg" alt="product-img" />
-                            <div class="preview-meta">
-                                <ul>
-                                    <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <a href="#" ><i class="tf-ion-ios-heart"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="tf-ion-android-cart"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product-single.html">Rainbow Shoes</a></h4>
-                            <p class="price">₩5,000</p>
+                            <p class="price">{price}</p>
                         </div>
                     </div>
                 </div>
                 
-                
-                
-            
+  
             <!-- Modal -->
             <div class="modal product-modal fade" id="product-modal">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -246,13 +159,24 @@ const content = `
     </section>
 `;
 
-const body = document.querySelector('body');
-makeTemplate(body, content);
 
-fetch(`${API_URL}`)
-    .then( res => {
-        res.json()
-    })
+// 기존
+let result = fetch(API_URL);
+
+fetch(API_URL)
+    .then( res => res.json())
     .then( data => {
-        console.log(data);
-    })
+        let result = data.data;
+
+        result.forEach( e => {
+            console.log(e);
+            content = content.replace('{name}', e.name);
+            content = content.replace('{discription}', e.description);
+            content = content.replace('{price}', setParseStringAmount(e.price));
+            
+        });
+
+    const body = document.querySelector('body');
+    makeTemplate(body, content);
+
+    });
