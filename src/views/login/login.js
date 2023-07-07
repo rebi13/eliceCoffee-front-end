@@ -1,3 +1,4 @@
+import { makeTemplate } from '../common/template.js';
 const loginHTML = `
 <section class="signin-page account">
         <div class="container">
@@ -28,7 +29,6 @@ const loginHTML = `
     </section>
 `;
 
-import { makeTemplate } from '../common/template.js';
 const body = document.querySelector('body');
 makeTemplate(body, loginHTML);
 
