@@ -151,7 +151,7 @@ function updateTotalPrice() {
     if (totalAmount >= 50000) {
       totalShippingFee = 0;
       products.forEach((product) => {
-        product.fee = 0; // Set the shipping fee for each product to 0
+        product.fee = 0; 
       });
     } else {
       totalShippingFee = products.reduce((sum, product) => sum + product.fee, 0);
@@ -230,7 +230,6 @@ orderSelectedButton.addEventListener("click", function () {
 orderAllButton.addEventListener("click", function () {
     const selectedProducts = products.filter((product) => product.checked);
     if (selectedProducts.length === 0) {
-        // No selected products, do not show the alert
         return;
     }
     // 주문 처리 로직 작성
