@@ -1,7 +1,4 @@
 import { makeTemplate } from '../common/template.js';
-const section = document.querySelector('body');
-makeTemplate(section);
-
 const loginHTML = `
 <section class="signin-page account">
         <div class="container">
@@ -32,8 +29,8 @@ const loginHTML = `
     </section>
 `;
 
-// loginHTML 변수에 담긴 HTML 코드를 body 태그 안에 삽입합니다.
-document.body.innerHTML = loginHTML;
+const body = document.querySelector('body');
+makeTemplate(body, loginHTML);
 
 document.getElementById('submitButton').addEventListener('click', function (event) {
   event.preventDefault();
@@ -60,7 +57,6 @@ document.getElementById('submitButton').addEventListener('click', function (even
     document.querySelector('#passwordInput').focus();
     return false;
   }
-
 
   // 입력 값이 조건에 맞을 경우, 로그인 처리를 진행합니다.
   // 로그인 처리를 완료한 후 메인 페이지로 이동합니다.
