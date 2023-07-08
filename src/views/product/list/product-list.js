@@ -1,10 +1,8 @@
 import { makeTemplate } from "../../common/template.js"
-import {setParseStringAmount} from '../../common/common.js';
+import { setParseStringAmount } from '../../common/common.js';
 
-const API_URL = "http://localhost:3000/api/v1/products";
-
-
-let content = `
+// 마크업
+let contentHead = `
     <!-- product list -->
     <section class="page-header">
         <div class="container">
@@ -24,105 +22,10 @@ let content = `
 
     <section class="products section">
         <div class="container">
-            <div class="row">
-                
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <span class="bage">Best</span>
-                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
-                            <div class="preview-meta">
-                                <ul>
-                                    <!-- <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li> -->
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product-single.html">{name}</a></h4>
-                            <p class="taste">
-                                {discription}
-                            </p>
-                            <p class="price">{price}</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="row">         
+    `;
 
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <span class="bage">Best</span>
-                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
-                            <div class="preview-meta">
-                                <ul>
-                                    <!-- <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li> -->
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product-single.html">{name}</a></h4>
-                            <p class="taste">
-                                {discription}
-                            </p>
-                            <p class="price">{price}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <span class="bage">Best</span>
-                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
-                            <div class="preview-meta">
-                                <ul>
-                                    <!-- <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li> -->
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product-single.html">{name}</a></h4>
-                            <p class="taste">
-                                {discription}
-                            </p>
-                            <p class="price">{price}</p>
-                        </div>
-                    </div>
-                </div>
-                
-  
+let contentTail = `
             <!-- Modal -->
             <div class="modal product-modal fade" id="product-modal">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -157,26 +60,62 @@ let content = `
             </div>
         </div>
     </section>
-`;
+    `;
 
 
-// 기존
-let result = fetch(API_URL);
-
+// 상품 목록 데이터 받아오기
+const API_URL = "http://localhost:3000/api/v1/products";
 fetch(API_URL)
     .then( res => res.json())
     .then( data => {
         let result = data.data;
 
         result.forEach( e => {
-            console.log(e);
-            content = content.replace('{name}', e.name);
-            content = content.replace('{discription}', e.description);
-            content = content.replace('{price}', setParseStringAmount(e.price));
+
+            // 데이터 수 만큼 목록 생성
+            let contentCenter = `
+                <div class="col-md-4">
+                    <div class="product-item">
+                        <div class="product-thumb">
+                            <span class="bage">Best</span>
+                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
+                            <div class="preview-meta">
+                                <ul>
+                                    <!-- <li>
+                                        <span  data-toggle="modal" data-target="#product-modal">
+                                            <i class="tf-ion-ios-search-strong"></i>
+                                        </span>
+                                    </li> -->
+                                    <li>
+                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h4><a href="product-single.html">{name}</a></h4>
+                            <p class="taste">
+                                {discription}
+                            </p>
+                            <p class="price">{price}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contentCenter = contentCenter.replaceAll('{name}', e.name);
+            contentCenter = contentCenter.replaceAll('{discription}', e.description);
+            contentCenter = contentCenter.replaceAll('{price}', setParseStringAmount(e.price));
+            contentHead += contentCenter;
             
         });
 
+        contentHead += contentTail;
+
     const body = document.querySelector('body');
-    makeTemplate(body, content);
+    makeTemplate(body, contentHead);
 
     });
