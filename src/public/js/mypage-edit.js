@@ -103,8 +103,6 @@ function render(userData) {
 const body = document.querySelector('body');
 makeTemplate(body, render(userData));
 
-/* */
-
 const formElem = document.querySelector('form');
 const withdrawalBtn = document.querySelector('.withdrawalBtn');
 
