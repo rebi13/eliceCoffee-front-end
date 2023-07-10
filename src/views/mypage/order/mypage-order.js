@@ -3,17 +3,17 @@ import { makeTemplate } from "../../common/template.js";
 
 /* 공통으로 사용 할 예정 */
 const orderStatus = {
-	"paid" : "결제완료",
-	"preparing": "배송준비중",
-    "shipping": "배송중",
-    "delivered" : "배송완료",
-    "pending" : "취소대기중",
-    "canceled" : "취소완료",
-}
+  paid: "결제완료",
+  preparing: "배송준비중",
+  shipping: "배송중",
+  delivered: "배송완료",
+  pending: "취소대기중",
+  canceled: "취소완료",
+};
 
 /* 렌더링 로직 */
 function renderProduct() {
-    return `
+  return `
         <tr>
             <td>
                 <img src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="제품사진" />
@@ -26,11 +26,13 @@ function renderProduct() {
 }
 
 function renderOrder(orderData) {
-    const { orderId, items, status, itemTotal, orderDate} = orderData;
-    const totalPrice = itemTotal.toLocaleString();
-    const displayDate = `${orderDate.getFullYear()}. ${orderDate.getMonth()+1}. ${orderDate.getDay()}`;
+  const { orderId, items, status, itemTotal, orderDate } = orderData;
+  const totalPrice = itemTotal.toLocaleString();
+  const displayDate = `${orderDate.getFullYear()}. ${
+    orderDate.getMonth() + 1
+  }. ${orderDate.getDay()}`;
 
-    return `
+  return `
         <div class="block">
             <h4 class="widget-title">${displayDate} (${orderId})</h4>
             <p class="status">${orderStatus[status]}</p>
@@ -45,7 +47,7 @@ function renderOrder(orderData) {
                     </tr>
                 </thead>
                 <tbody>
-                    ${items.map(item => renderProduct(item)).join('')}
+                    ${items.map((item) => renderProduct(item)).join("")}
                 </tbody>
             </table>
             <div class="footer text-right">
@@ -60,7 +62,7 @@ function renderOrder(orderData) {
 }
 
 function render(orderData) {
-    return `
+  return `
         <section class="page-header">
             <div class="container">
                 <div class="row">
@@ -92,7 +94,7 @@ function render(orderData) {
     `;
 }
 
-const body = document.querySelector('body');
+const body = document.querySelector("body");
 makeTemplate(body, render(orderData));
 
 /**
@@ -105,36 +107,40 @@ makeTemplate(body, render(orderData));
  */
 
 function validateCancel(status) {
-    const isCancelable = !(status === "shipping" || status === "deliveryComplete");
-    
-    return isCancelable;
+  const isCancelable = !(
+    status === "shipping" || status === "deliveryComplete"
+  );
+
+  return isCancelable;
 }
 
 function cancelOrder() {
-    // 데모
-    const product = {
-        id: 1,
-        status: "shipping"
-    }
+  // 데모
+  const product = {
+    id: 1,
+    status: "shipping",
+  };
 
-    // shipping, deliveryComplete인 경우 alert
-    if (!validateCancel(product.status)) {
-        alert("이미 배송이 시작되어 주문 취소가 불가합니다.");
-        return;
-    }
+  // shipping, deliveryComplete인 경우 alert
+  if (!validateCancel(product.status)) {
+    alert("이미 배송이 시작되어 주문 취소가 불가합니다.");
+    return;
+  }
 
-    // preparing
-    if (product.status === "preparing") {
-        alert("상품을 준비중이어서 관리자의 승인 여부에 따라 취소가 불가할 수 있습니다.");
-        return;
-    }
+  // preparing
+  if (product.status === "preparing") {
+    alert(
+      "상품을 준비중이어서 관리자의 승인 여부에 따라 취소가 불가할 수 있습니다."
+    );
+    return;
+  }
 
-    alert("주문이 취소되었습니다.");
+  alert("주문이 취소되었습니다.");
 }
 
 // 테스트용
-const cancelBtns = document.querySelectorAll('.cancelBtn');
-cancelBtns.forEach((btn) => btn.addEventListener('click', cancelOrder));
+const cancelBtns = document.querySelectorAll(".cancelBtn");
+cancelBtns.forEach((btn) => btn.addEventListener("click", cancelOrder));
 
 // 테스트 코드
 // console.log(validateCancel("shipping")); // false
