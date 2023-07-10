@@ -1,4 +1,4 @@
-import { makeTemplate } from "../common/template.js";
+import { makeTemplate } from "./common/template.js";
 const homeHTML = `
 
 <section class="md-products">
