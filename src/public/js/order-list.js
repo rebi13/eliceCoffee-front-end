@@ -1,19 +1,13 @@
 import { orderData } from '../mock/order.js';
 import { makeTemplate } from "./common/template.js";
-
-/* 공통으로 사용 할 예정 */
-const orderStatus = {
-  paid: "결제완료",
-  preparing: "배송준비중",
-  shipping: "배송중",
-  delivered: "배송완료",
-  pending: "취소대기중",
-  canceled: "취소완료",
-};
+import { deliveryStatus } from '../constants/index.js';
+import g from './common/common.js';
 
 /* 렌더링 로직 */
+const body = document.querySelector("body");
+
 function renderProduct() {
-  return `
+    return `
         <tr>
             <td>
                 <img src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="제품사진" />
@@ -26,16 +20,14 @@ function renderProduct() {
 }
 
 function renderOrder(orderData) {
-  const { orderId, items, status, itemTotal, orderDate } = orderData;
-  const totalPrice = itemTotal.toLocaleString();
-  const displayDate = `${orderDate.getFullYear()}. ${
-    orderDate.getMonth() + 1
-  }. ${orderDate.getDay()}`;
+    const { orderId, items, status, itemTotal, orderDate } = orderData;
+    const totalPrice = itemTotal.toLocaleString();
+    const displayDate = g.formatDate(orderDate);
 
-  return `
+    return `
         <div class="block">
             <h4 class="widget-title">${displayDate} (${orderId})</h4>
-            <p class="status">${orderStatus[status]}</p>
+            <p class="status">${deliveryStatus[status]}</p>
             <table class="table">
                 <thead>
                     <tr>
@@ -62,7 +54,7 @@ function renderOrder(orderData) {
 }
 
 function render(orderData) {
-  return `
+    return `
         <section class="page-header">
             <div class="container">
                 <div class="row">
@@ -94,21 +86,14 @@ function render(orderData) {
     `;
 }
 
-const body = document.querySelector("body");
 makeTemplate(body, render(orderData));
 
 /* 일반 함수 */
-
-/**
- * 배송 상태에 대한 응답값은 아래와 같다고 가정
- * 결제완료: payComplete
- * 상품준비중: preparing
- * 배송중: shipping
- * 배송완료: deliveryComplete
- */
-
 function validateCancel(status) {
-    const isCancelable = !(status === "shipping" || status === "deliveryComplete");
+    const isCancelable = !(
+        deliveryStatus[status] === "배송중" || 
+        deliveryStatus[status] === "배송완료"
+    );
     
     return isCancelable;
 }
@@ -126,8 +111,8 @@ function cancelOrder() {
         return;
     }
 
-    // preparing
-    if (product.status === "preparing") {
+    // 배송준비중
+    if (deliveryStatus[product.status] === "배송준비중") {
         alert("상품을 준비중이어서 관리자의 승인 여부에 따라 취소가 불가할 수 있습니다.");
         return;
     }

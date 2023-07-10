@@ -2,6 +2,9 @@ import { userData } from '../mock/user.js';
 import { makeTemplate } from "./common/template.js";
 import { rankImg, ranks } from '../constants/index.js';
 
+/* 렌더링 로직 */
+const body = document.querySelector('body');
+
 function template(userData) {
     const { name, email, phoneNumber, address, point, rank } = userData;
     const profileSrc = rankImg[rank], rankName = ranks[rank];
@@ -48,7 +51,7 @@ function template(userData) {
                             </div>
                             <div class="btn-wrapper">
                                 <div>
-                                    <a href="/mypage/order" class="btn btn-main btn-small">주문 내역</a>
+                                    <a href="/order" class="btn btn-main btn-small">주문 내역</a>
                                     <a href="/mypage/edit" class="btn btn-main btn-small">회원 정보</a>
                                 </div>
                             </div>
@@ -60,5 +63,4 @@ function template(userData) {
     `;
 }
 
-const body = document.querySelector('body');
 makeTemplate(body, template(userData));
