@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500');
 
 header {
-  position: fixed;
+  position: sticky;
+  z-index: 1;
+  /* width: 100%; */
   top: 0;
   left: 0;
   right: 0;
@@ -61,15 +63,19 @@ a:hover {
 }
 
 nav {
-  position: fixed;
+  position: sticky;
+  z-index: 1;
+  top: 50px;
+  left: 0;
+  right: 0;
   display: flex;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
   background-color: #7b6d66;
   height: 50px;
-  width: 100%;
+  /* width: 100%; */
 }
 
 nav ul {
@@ -80,8 +86,8 @@ nav ul {
   margin: 0;
 }
 
-nav li {
-  margin: 0 10px;
+nav ul li {
+  margin-right: 15px;
 }
 
 .dropdown-menu {
@@ -96,18 +102,20 @@ nav li {
   display: block;
 }
 
-nav a {
+nav ul li a {
   text-decoration: none;
   color: #fff;
 }
 
 /* 본문 스타일 */
 section {
-  padding-top: 80px; /* 헤더와 내비게이션의 높이만큼 여백 추가 */
+  min-height: calc(100% - 120px);
+  padding-top: 80px;
 }
 
 footer {
   position: fixed;
+  width: 100%;
   bottom: 0;
   left: 0;
   right: 0;
