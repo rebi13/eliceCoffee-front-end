@@ -1,5 +1,5 @@
-import { userData } from '../../../mock/user.js';
-import { makeTemplate } from '../../common/template.js';
+import { userData } from '../mock/user.js';
+import { makeTemplate } from "./common/template.js";
 
 const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
@@ -164,15 +164,6 @@ formElem.addEventListener('submit', (event) => {
         return;
     }
 
-    validatePassword(currentPassword, newPassword, confirmNewPassword)
-    .then(() => {
-        alert("비밀번호가 성공적으로 변경되었습니다.");
-        // 리다이렉트 처리 필요
-    })
-    .catch((err) => {
-        alert(err.message);
-    });
-});
     validatePassword(currentPassword, newPassword, confirmNewPassword)
     .then(() => {
         alert("비밀번호가 성공적으로 변경되었습니다.");

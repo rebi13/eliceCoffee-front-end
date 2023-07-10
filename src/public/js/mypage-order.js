@@ -1,5 +1,5 @@
-import { orderData } from "../../../mock/order.js";
-import { makeTemplate } from "../../common/template.js";
+import { orderData } from '../mock/order.js';
+import { makeTemplate } from "./common/template.js";
 
 /* 공통으로 사용 할 예정 */
 const orderStatus = {
@@ -97,8 +97,9 @@ function render(orderData) {
 const body = document.querySelector("body");
 makeTemplate(body, render(orderData));
 
+/* 일반 함수 */
 /**
- * 일반 함수
+
  * 배송 상태에 대한 응답값은 아래와 같다고 가정
  * 결제완료: payComplete
  * 상품준비중: preparing
