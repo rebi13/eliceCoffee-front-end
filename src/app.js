@@ -13,7 +13,7 @@ const productRouter = require('./routes/productRouter');
 const PORT = process.env.PORT || 8080;
 
 // 정적 파일들을 서빙하기 위한 절대 경로 설정
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "/public/"));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/views/home.html'));

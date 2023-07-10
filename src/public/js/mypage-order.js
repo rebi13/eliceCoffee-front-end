@@ -1,5 +1,5 @@
-import { orderData } from "../../../mock/order.js";
-import { makeTemplate } from "../../common/template.js";
+import { orderData } from '../mock/order.js';
+import { makeTemplate } from "./common/template.js";
 
 /* 공통으로 사용 할 예정 */
 const orderStatus = {

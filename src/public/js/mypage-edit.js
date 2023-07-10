@@ -1,5 +1,5 @@
-import { userData } from '../../../mock/user.js';
-import { makeTemplate } from '../../common/template.js';
+import { userData } from '../mock/user.js';
+import { makeTemplate } from "./common/template.js";
 
 const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
 
