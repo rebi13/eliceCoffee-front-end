@@ -8,10 +8,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/edit', (req, res) => {
-    res.redirect('/');
-});
-
-router.get('/edit/:orderId', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/order-edit.html'));
 });
 
