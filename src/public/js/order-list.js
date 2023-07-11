@@ -12,7 +12,10 @@ function renderProduct() {
             <td>
                 <img src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="제품사진" />
             </td>
-            <td>나이키</td>
+            <td class="product-info">
+                <a href="#">나이키</a>
+                <p>[ 옵션: 200g ]</p>
+            </td>
             <td>3</td>
             <td>150원</td>
         </tr>
@@ -29,13 +32,18 @@ function renderOrder(orderData) {
             <h4 class="widget-title">${displayDate} (${orderId})</h4>
             <p class="status">${deliveryStatus[status]}</p>
             <table class="table">
+                <colgroup>
+                    <col style="width: 27px">
+                    <col style="width: auto">
+                    <col style="width: 75px">
+                    <col style="width: 98px">
+                </colgroup>
                 <thead>
                     <tr>
                         <th></th>
                         <th>제품명</th>
                         <th>수량</th>
                         <th>결제 금액</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,36 +61,143 @@ function renderOrder(orderData) {
     `;
 }
 
+{/* <table>
+        <colgroup>
+            <col style="width:27px">        <!--체크박스-->
+            <col style="width:100px">       <!--이미지-->
+            <col style="width:auto">        <!--상품정보-->
+            <col style="width:98px">        <!--판매가-->
+            <col style="width:75px">        <!--수량-->
+            <col style="width:85px">        <!--배송비-->
+            <col style="width:110px">       <!--합계-->
+        </colgroup>
+        <thead class="cart-product-header">
+            <tr>
+                <th scope="col"><input id="select-all-header" type="checkbox"></th>
+                <th scope="col">이미지</th>
+                <th scope="col">상품정보</th>
+                <th scope="col">판매가</th>
+                <th scope="col">수량</th>
+                <th scope="col">배송비</th>
+                <th scope="col">합계</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 장바구니 리스트 시작 -->
+        <tr>
+                <td>
+                    <input type="checkbox" class="product-checkbox-input">
+                </td>
+                <td>
+                    <a href="#">
+                        <img class="cart-product-image" src="../../assets/thumbnail/brazil-cerrado.jpg" alt="브라질 세라도">
+                    </a>
+                </td>
+                <td class="cart-product-info">
+                    <a href="#">Brazil Cerrado</a>
+                    <p>[ 옵션: 200g ]</p>
+                </td>     
+                <td>3,400원</td>
+                <td>
+                    <div class="cart-count">
+                        <input type="text" size="1" value="1" id="cart-count-input">
+                        <span class="cart-count-button">
+                            <img src="	https://img.echosting.cafe24.com/design/skin/default/product/btn_count_up.gif" alt="수량증가">
+                            <img src="https://img.echosting.cafe24.com/design/skin/default/product/btn_count_down.gif" alt="수량감소">
+                        </span>
+                    </div>
+                </td>
+                <td>3,000원</td>
+                <td id="product-amount">3,400원</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" class="product-checkbox-input">
+                </td>
+                <td>
+                    <a href="#">
+                        <img class="cart-product-image" src="../../assets/thumbnail/brazil-santos.jpg" alt="브라질 세라도">
+                    </a>
+                </td>
+                <td class="cart-product-info">
+                    <a href="#">Brazil Santos</a>
+                    <p>[ 옵션: 300g ]</p>
+                </td>     
+                <td>3,200원</td>
+                <td>
+                    <div class="cart-count">
+                        <input type="text" size="1" value="1" id="cart-count-input">
+                        <span class="cart-count-button">
+                            <img src="	https://img.echosting.cafe24.com/design/skin/default/product/btn_count_up.gif" alt="수량증가">
+                            <img src="https://img.echosting.cafe24.com/design/skin/default/product/btn_count_down.gif" alt="수량감소">
+                        </span>
+                    </div>
+                </td>
+                <td>3,000원</td>
+                <td id="product-amount">3,200원</td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" class="product-checkbox-input">
+                </td>
+                <td>
+                    <a href="#">
+                        <img class="cart-product-image" src="../../assets/thumbnail/colombia-supremo.jpg" alt="브라질 세라도">
+                    </a>
+                </td>
+                <td class="cart-product-info">
+                    <a href="#">colombia-supremo</a>
+                    <p>[ 옵션: 400g ]</p>
+                </td>     
+                <td>5,500원</td>
+                <td>
+                    <div class="cart-count">
+                        <input type="text" size="1" value="3" id="cart-count-input">
+                        <span class="cart-count-button">
+                            <img src="	https://img.echosting.cafe24.com/design/skin/default/product/btn_count_up.gif" alt="수량증가">
+                            <img src="https://img.echosting.cafe24.com/design/skin/default/product/btn_count_down.gif" alt="수량감소">
+                        </span>
+                    </div>
+                </td>
+                <td>3,000원</td>
+                <td id="product-amount">16,500원</td>
+            </tr>
+        </tbody>
+    </table> 
+*/}
+
 function render(orderData) {
     return `
-        <section class="page-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="content">
-                            <h1 class="page-name">주문 목록</h1>
-                            <ol class="breadcrumb">
-                                <li><a href="index.html">Home</a></li>
-                                <li class="active">주문 목록</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="user-dashboard page-wrapper">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="dashboard-wrapper user-dashboard">
-                            <div class="table-responsive">
-                                ${renderOrder(orderData)}
+        <main>
+            <section class="page-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="content">
+                                <h1 class="page-name">주문 목록</h1>
+                                <ol class="breadcrumb">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li class="active">주문 목록</li>
+                                </ol>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section class="user-dashboard page-wrapper">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="dashboard-wrapper user-dashboard">
+                                <div class="table-responsive">
+                                    ${renderOrder(orderData)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     `;
 }
 
