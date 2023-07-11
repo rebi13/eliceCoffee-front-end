@@ -1,5 +1,5 @@
 import { makeTemplate } from "./common/template.js";
-import { setParseStringAmount } from './common/common.js';
+import g from './common/common.js';
 
 let contentHead = `
     <!-- product list -->
@@ -8,10 +8,10 @@ let contentHead = `
             <div class="row">
                 <div class="col-md-12">
                     <div class="content">
-                        <h1 class="page-name">원두커피</h1>
+                        <h1 class="page-name">MD추천상품</h1>
                         <ol class="breadcrumb">
                             <!-- <li><a href="#">Home</a></li> -->
-                            <li class="active">나라별 커피</li>
+                            <li class="active">커피 상품 목록</li>
                         </ol>
                     </div>
                 </div>
@@ -62,7 +62,7 @@ let contentTail = `
     `;
 
 // 상품 목록 데이터 받아오기
-const API_URL = "http://localhost:3000/api/v1/products";
+const API_URL = "http://localhost:3001/api/v1/products";
 fetch(API_URL)
     .then( res => res.json())
     .then( data => {
@@ -106,7 +106,7 @@ fetch(API_URL)
             `;
             contentCenter = contentCenter.replaceAll('{name}', e.name);
             contentCenter = contentCenter.replaceAll('{discription}', e.description);
-            contentCenter = contentCenter.replaceAll('{price}', setParseStringAmount(e.price));
+            contentCenter = contentCenter.replaceAll('{price}', g.setParseStringAmount(e.price));
             contentHead += contentCenter;
             
         });
