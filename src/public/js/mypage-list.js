@@ -1,12 +1,12 @@
-import { userData } from '../mock/user.js';
 import { makeTemplate } from "./common/template.js";
-import { rankImg, ranks } from '../constants/index.js';
+import { rankImg, ranks, API_END_POINT } from '../constants/index.js';
 
 /* 렌더링 로직 */
 const body = document.querySelector('body');
 
-function template(userData) {
-    const { name, email, phoneNumber, address, point, rank } = userData;
+function render(userData) {
+    const { name, email, phone, address, point, rank } = userData;
+    console.log(userData.rank);
     const profileSrc = rankImg[rank], rankName = ranks[rank];
     
     return `
@@ -41,7 +41,7 @@ function template(userData) {
                                         <ul class="user-profile-list">
                                             <li><span>이름:</span>${name}</li>
                                             <li><span>이메일:</span>${email}</li>
-                                            <li><span>휴대전화:</span>${phoneNumber}</li>
+                                            <li><span>휴대전화:</span>${phone}</li>
                                             <li><span>주소:</span>${address}</li>
                                             <li><span>포인트:</span>${point}</li>
                                             <li><span>등급:</span>${rankName}</li>
@@ -63,4 +63,19 @@ function template(userData) {
     `;
 }
 
-makeTemplate(body, template(userData));
+async function getUserData() {
+    try {
+        const result = await fetch(`${API_END_POINT}/auth`, { credentials: "include" }).then(res => res.json());
+
+        if (result.error !== null) {
+            throw new Error(result.error);
+        }
+        
+        makeTemplate(body, render(result.data))
+    } catch(err) {
+        console.error(err);
+        alert("데이터를 받아오던 중 에러가 발생했습니다.");
+    }
+}
+
+getUserData();
