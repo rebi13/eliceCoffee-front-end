@@ -57,7 +57,7 @@ function renderOrder(orderData) {
                 <p class="total-price">총액 : ${totalPrice}원</p>
                 <div>
                     <a 
-                        href="order/edit/${id}"
+                        href="order/edit?orderId=${id}"
                         class="btn btn-default"
                         ${canOrderChange}
                     >
