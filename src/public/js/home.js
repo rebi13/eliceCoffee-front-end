@@ -20,7 +20,7 @@ let contentHead = `
     </section>    
     `;
 
-    let contentHead2 = `
+let contentHead2 = `
     <!-- product list -->
     <section class="page-header">
         <div class="container">
@@ -162,15 +162,15 @@ fetch(API_URL)
     });
 
     //커피용품
-const API_URL2 = 'http://localhost:3001/api/v1/products/main/Supplies';
-fetch(API_URL2)
-  .then((res) => res.json())
-  .then((data) => {
-    let result = data.data;
+    const API_URL2 = 'http://localhost:3001/api/v1/products/main/supplies';
+    fetch(API_URL2)
+      .then((res) => res.json())
+      .then((data) => {
+        let result = data.data;
 
-    result.forEach((e) => {
-      // 데이터 수 만큼 목록 생성
-      let contentCenter = `
+        result.forEach((e) => {
+          // 데이터 수 만큼 목록 생성
+          let contentCenter = `
                 <div class="col-md-4">
                     <div class="product-item">
                         <div class="product-thumb">
@@ -203,29 +203,28 @@ fetch(API_URL2)
                     </div>
                 </div>                
             `;
-      contentCenter = contentCenter.replaceAll('{name}', e.name);
-      contentCenter = contentCenter.replaceAll('{discription}', e.description);
-      contentCenter = contentCenter.replaceAll('{price}', g.setParseStringAmount(e.price));
-      contentHead2 += contentCenter;
-    });
+          contentCenter = contentCenter.replaceAll('{name}', e.name);
+          contentCenter = contentCenter.replaceAll('{discription}', e.description);
+          contentCenter = contentCenter.replaceAll('{price}', g.setParseStringAmount(e.price));
+          contentHead2 += contentCenter;
+        });
 
-    contentHead2 += contentTail;
+        contentHead2 += contentTail;
 
-    const body = document.querySelector('body');
-    makeTemplate(body, contentSlider + contentHead + contentHead2);
-    new Swiper('.swiper', {
-      // Swiper 옵션을 설정합니다.
-      autoplay: {
-        delay: 3000,
-      },
-      loop: true,
-      slidesPerView: 1,
-      centeredSlides: true,
-      observer: true,
-      observerParents: true,
-    });
-  });
-
+        const body = document.querySelector('body');
+        makeTemplate(body, contentSlider + contentHead + contentHead2);
+        new Swiper('.swiper', {
+          // Swiper 옵션을 설정합니다.
+          autoplay: {
+            delay: 3000,
+          },
+          loop: true,
+          slidesPerView: 1,
+          centeredSlides: true,
+          observer: true,
+          observerParents: true,
+        });
+      });
   });
 
 // const homeHTML = `
