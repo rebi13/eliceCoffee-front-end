@@ -1,5 +1,7 @@
+import { API_END_POINT } from "/constants/index.js";    
 import { makeTemplate } from "../../common/template.js"
 import { setParseStringAmount } from '../../common/common.js';
+
 
 // 마크업
 let contentHead = `
@@ -64,7 +66,7 @@ let contentTail = `
 
 
 // 상품 목록 데이터 받아오기
-const API_URL = "http://localhost:3000/api/v1/products";
+const API_URL = `${ API_END_POINT }/products/:categoryId`;
 fetch(API_URL)
     .then( res => res.json())
     .then( data => {
