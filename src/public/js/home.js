@@ -62,7 +62,7 @@ let contentTail = `
     `;
 
 // 상품 목록 데이터 받아오기
-const API_URL = "http://localhost:3001/api/v1/products";
+const API_URL = "http://localhost:3001/api/v1/products/main";
 fetch(API_URL)
     .then( res => res.json())
     .then( data => {
