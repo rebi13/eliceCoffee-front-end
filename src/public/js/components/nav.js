@@ -2,7 +2,7 @@ const nav = `
     <nav>
         <ul>
             <li class="dropdown">
-                <a class="dropdown-toggle" href="#">국가별</a>
+                <a href="/product/country">국가별</a>
             </li>
 
             <li class="dropdown">
@@ -10,12 +10,11 @@ const nav = `
             </li>
 
             <li class="dropdown">
-                <a href="#">드립</a>
+                <a href="/product/drip">드립</a>
             </li>
 
             <li class="dropdown">
-                <a class="dropdown-toggle" href="#">커피용품</a>
-                
+                <a href="/product/supplies">커피용품</a>                
             </li>
         </ul>
     </nav>
