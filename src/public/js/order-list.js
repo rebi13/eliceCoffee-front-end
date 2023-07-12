@@ -1,9 +1,10 @@
+import g from './common/common.js';
 import { makeTemplate } from "./common/template.js";
 import { deliveryStatus, API_END_POINT } from '../constants/index.js';
-import g from './common/common.js';
 
 /* 렌더링 로직 */
 const body = document.querySelector("body");
+init();
 
 function renderProduct(item) {
     const { name, option, count, price, mainImage } = item;
@@ -112,7 +113,7 @@ function render(orders) {
 }
 
 /* 일반 함수 */
-async function getOrderList() {
+async function init() {
     try {
         const result = await fetch(`${API_END_POINT}/orders`, { credentials: "include" }).then(res => res.json());
 
@@ -129,8 +130,6 @@ async function getOrderList() {
         alert("데이터를 받아오던 중 에러가 발생했습니다.");
     }
 }
-
-getOrderList();
 
 function validateCancel(status) {
     const isCancelable = !(

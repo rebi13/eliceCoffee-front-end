@@ -1,11 +1,12 @@
+import g from '../js/common/common.js';
 import { makeTemplate } from "./common/template.js";
 import { API_END_POINT } from "../constants/index.js";
-import g from '../js/common/common.js';
 
 /* 렌더링 로직 */
 let orderId = null;
+
 const body = document.querySelector('body');
-getOrderList();
+init();
 
 function render(orderData) {
     const { address, receiver, receiverPhone } = orderData;
@@ -65,6 +66,33 @@ function render(orderData) {
 }
 
 /* 일반 함수 로직 */
+async function init() {
+    const params = new URLSearchParams(window.location.search);
+    orderId = params.get('orderId');
+
+    if (!orderId) {
+        alert("잘못된 접근입니다.");
+        g.redirectUserPage('/');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_END_POINT}/orders`, { credentials: 'include' }).then(res => res.json());
+        const orderData = response.data.find(item => item.id === orderId);
+
+        if (!orderData) {
+            throw new Error("해당 주문내역이 조회되지 않습니다.");
+        }
+        
+        makeTemplate(body, render(orderData));
+
+        const formElem = document.querySelector('form');
+        formElem.addEventListener('submit', handleSubmit);
+    } catch (error) {
+        console.error(error);
+        alert("에러가 발생했습니다.");
+    }
+}
 
 async function updateOrder(newOrderData) {
     try {
@@ -89,36 +117,7 @@ async function updateOrder(newOrderData) {
     }
 }
 
-/* fetch 로직으로 변경 필요 */
-async function getOrderList() {
-    const params = new URLSearchParams(window.location.search);
-    orderId = params.get('orderId');
-
-    if (!orderId) {
-        alert("잘못된 접근입니다.");
-        g.redirectUserPage('/');
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_END_POINT}/orders`, { credentials: 'include' }).then(res => res.json());
-        const orderData = response.data.find(item => item.id === orderId);
-
-        if (!orderData) {
-            throw new Error("해당 주문내역이 조회되지 않습니다.");
-        }
-        
-        makeTemplate(body, render(orderData));
-
-        const formElem = document.querySelector('form');
-        formElem.addEventListener('submit', submitHandler);
-    } catch (error) {
-        console.error(error);
-        alert("에러가 발생했습니다.");
-    }
-}
-
-function submitHandler(event) {
+function handleSubmit(event) {
     event.preventDefault();
 
     const shouldModify = window.confirm("주문을 수정하시겠습니까?");

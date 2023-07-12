@@ -3,6 +3,7 @@ import { rankImg, ranks, API_END_POINT } from '../constants/index.js';
 
 /* 렌더링 로직 */
 const body = document.querySelector('body');
+init();
 
 function render(userData) {
     const { name, email, phone, address, point, rank } = userData;
@@ -63,7 +64,7 @@ function render(userData) {
     `;
 }
 
-async function getUserData() {
+async function init() {
     try {
         const result = await fetch(`${API_END_POINT}/auth`, { credentials: "include" }).then(res => res.json());
 
@@ -77,5 +78,3 @@ async function getUserData() {
         alert("데이터를 받아오던 중 에러가 발생했습니다.");
     }
 }
-
-getUserData();
