@@ -1,10 +1,11 @@
-import { userData } from '../mock/user.js';
+import { validateRegex, API_END_POINT } from "../constants/index.js";
 import { makeTemplate } from "./common/template.js";
+import g from '../js/common/common.js';
 
-const pwdRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+const body = document.querySelector('body');
 
 function render(userData) {
-    const { name, email, phoneNumber, address } = userData;
+    const { name, email, phone, address } = userData;
 
     return `
         <main>
@@ -44,22 +45,14 @@ function render(userData) {
                                     </div>
                                     <div class="form-group">
                                         <input 
-                                            name="phoneNumber"
+                                            name="phone"
                                             type="text" 
                                             class="form-control"  
                                             placeholder="전화번호를 입력해주세요." 
-                                            value="${phoneNumber}"
+                                            value="${phone}"
                                         />
                                     </div>
                                     <!-- password -->
-                                    <div class="form-group">
-                                        <input 
-                                            name="currentPassword" 
-                                            type="password" 
-                                            class="form-control"  
-                                            placeholder="현재 비밀번호"
-                                        />
-                                    </div>
                                     <div class="form-group">
                                         <input 
                                             id="newPassword" 
@@ -100,18 +93,31 @@ function render(userData) {
     `;
 }
 
-const body = document.querySelector('body');
-makeTemplate(body, render(userData));
+async function getUserData() {
+    try {
+        const res = await fetch(`${API_END_POINT}/auth`, { credentials: "include" });
 
-const formElem = document.querySelector('form');
-const withdrawalBtn = document.querySelector('.withdrawalBtn');
+        if (!res.ok) {
+            throw new Error(result.error);
+        }
+        
+        const { data } = await res.json();
+        makeTemplate(body, render(data));
 
-// 변경할 비밀번호 테스트 완료 (aA123456789!!!!!)
-const mockupPw = "1234";
+        const formElem = document.querySelector('form');
+        formElem.addEventListener('submit', handleSubmit);
+
+        const withdrawalBtn = document.querySelector('.withdrawalBtn');
+    } catch(err) {
+        console.error(err);
+        alert("데이터를 받아오던 중 에러가 발생했습니다.");
+    }
+}
+
+getUserData();
 
 async function fetchNewPassword(currentPassword) {
-    // 임시
-    return mockupPw === currentPassword;
+    // 주소랑 번호만 바꾼다?
 
     // try {
         // const response = await fetch('https', { method: 'PATCH' });
@@ -126,11 +132,7 @@ async function fetchNewPassword(currentPassword) {
     // }
 }
 
-async function validatePassword(currentPassword, newPassword, confirmNewPassword) {
-    if (!currentPassword) {
-        throw new Error("현재 비밀번호를 입력해주세요.");
-    }
-
+async function validatePassword(newPassword, confirmNewPassword) {
     if (!newPassword) {
         throw new Error("새로운 비밀번호를 입력해주세요.");
     }
@@ -140,7 +142,7 @@ async function validatePassword(currentPassword, newPassword, confirmNewPassword
         throw new Error("비밀번호 확인이 일치하지 않습니다.");
     }
 
-    if (!pwdRegex.test(newPassword)) {
+    if (!validateRegex.pw.test(newPassword)) {
         throw new Error("규칙에 맞지 않는 비밀번호입니다.");
     }
 
@@ -151,23 +153,19 @@ async function validatePassword(currentPassword, newPassword, confirmNewPassword
     }
 }
 
-formElem.addEventListener('submit', (event) => {
+function handleSubmit(event) {
     event.preventDefault();
-
-    const currentPassword = event.target.currentPassword.value;
+    
+    
     const newPassword = event.target.newPassword.value;
     const confirmNewPassword = event.target.confirmNewPassword.value;
-
-    if (!currentPassword && !newPassword) {
-        return;
-    }
 
     validatePassword(currentPassword, newPassword, confirmNewPassword)
     .then(() => {
         alert("비밀번호가 성공적으로 변경되었습니다.");
-        // 리다이렉트 처리 필요
+        // g.redirectUserPage('/login');
     })
     .catch((err) => {
         alert(err.message);
     });
-});
+}
