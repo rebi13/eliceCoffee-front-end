@@ -6,7 +6,7 @@ const nav = `
             </li>
 
             <li class="dropdown">
-                <a href="#">블랜드</a>
+                <a href="/product/blend">블랜드</a>
             </li>
 
             <li class="dropdown">

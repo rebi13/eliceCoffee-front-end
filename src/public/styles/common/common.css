@@ -263,3 +263,9 @@ input[type='tel']:focus {
 .page-header .breadcrumb li a {
   color: #000;
 }
+
+.container-404 {
+  display: flex;
+  align-items: center;
+  
+}
