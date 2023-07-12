@@ -17,14 +17,43 @@ let contentHead = `
                 </div>
             </div>
         </div>
-    </section>
+    </section>    
+    `;
 
-    <section class="products section">
+    let contentHead2 = `
+    <!-- product list -->
+    <section class="page-header">
         <div class="container">
             <div class="row">
+                <div class="col-md-12">
+                    <div class="content">
+                        <h1 class="page-name">커피 용품</h1>
+                        <ol class="breadcrumb">
+                            <!-- <li><a href="#">Home</a></li> -->
+                            <li class="active">커피 용품 목록</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>    
+    `;
+
+let contentSlider = `
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="../../../assets/slider/slider-1.jpg"></div>
+        <div class="swiper-slide"><img src="../../../assets/slider/slider-2.jpg"></div>
+        <div class="swiper-slide"><img src="../../../assets/slider/slider-3.jpg"></div>
+        <div class="swiper-slide"><img src="../../../assets/slider/slider-4.jpg"></div>
+      </div>
+    </div>
     `;
 
 let contentTail = `
+        <section class="products section">
+        <div class="container">
+            <div class="row">
             <!-- Modal -->
             <div class="modal product-modal fade" id="product-modal">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -85,7 +114,7 @@ let contentTail = `
 `;
 
 // 상품 목록 데이터 받아오기
-const API_URL = 'http://localhost:3001/api/v1/products/main';
+const API_URL = 'http://localhost:3001/api/v1/products/main/coffee';
 fetch(API_URL)
   .then((res) => res.json())
   .then((data) => {
@@ -132,11 +161,72 @@ fetch(API_URL)
       contentHead += contentCenter;
     });
 
-    contentHead += contentTail;
+    //커피용품
+const API_URL2 = 'http://localhost:3001/api/v1/products/main/Supplies';
+fetch(API_URL2)
+  .then((res) => res.json())
+  .then((data) => {
+    let result = data.data;
+
+    result.forEach((e) => {
+      // 데이터 수 만큼 목록 생성
+      let contentCenter = `
+                <div class="col-md-4">
+                    <div class="product-item">
+                        <div class="product-thumb">
+                            <span class="bage">Best</span>
+                            <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
+                            <div class="preview-meta">
+                                <ul>
+                                    <!-- <li>
+                                        <span  data-toggle="modal" data-target="#product-modal">
+                                            <i class="tf-ion-ios-search-strong"></i>
+                                        </span>
+                                    </li> -->
+                                    <li>
+                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h4><a href="product-single.html">{name}</a></h4>
+                            <p class="taste">
+                                {discription}
+                            </p>
+                            <p class="price">{price}</p>
+                        </div>
+                    </div>
+                </div>                
+            `;
+      contentCenter = contentCenter.replaceAll('{name}', e.name);
+      contentCenter = contentCenter.replaceAll('{discription}', e.description);
+      contentCenter = contentCenter.replaceAll('{price}', g.setParseStringAmount(e.price));
+      contentHead2 += contentCenter;
+    });
+
+    contentHead2 += contentTail;
 
     const body = document.querySelector('body');
-    makeTemplate(body, contentHead);
-});
+    makeTemplate(body, contentSlider + contentHead + contentHead2);
+    new Swiper('.swiper', {
+      // Swiper 옵션을 설정합니다.
+      autoplay: {
+        delay: 3000,
+      },
+      loop: true,
+      slidesPerView: 1,
+      centeredSlides: true,
+      observer: true,
+      observerParents: true,
+    });
+  });
+
+  });
 
 // const homeHTML = `
 
