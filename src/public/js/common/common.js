@@ -85,7 +85,7 @@ const g = {
    * @returns {void}
    */
   deleteCookie: (cookieName) => {
-    document.cookie = `${cookieName}=; Max-Age=-99999999;`;
+    document.cookie = `${cookieName}=; Max-Age=-99999999; path=/; domain=localhost;`;
   }
 };
 
