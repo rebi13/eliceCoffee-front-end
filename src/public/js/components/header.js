@@ -23,11 +23,10 @@ function setLoginLogoutButton() {
     `;
 }
 
-const header = `
-    <header>
-        <a href="/">
-            <h1>☕️ Elice Coffee</h1>
-        </a>
+function setLoggedInButtons() {
+    const token = g.getCookie("loginToken");
+
+    const btns = `
         <a href="/mypage">
             <div>마이페이지</div>
         </a>
@@ -37,6 +36,17 @@ const header = `
         <a href="/order">
             <div>주문목록</div>
         </a>
+    `;
+
+    return token ? btns : "";
+}
+
+const header = `
+    <header>
+        <a href="/">
+            <h1>☕️ Elice Coffee</h1>
+        </a>
+        ${setLoggedInButtons()}
         ${setLoginLogoutButton()}
     </header>
 `;
