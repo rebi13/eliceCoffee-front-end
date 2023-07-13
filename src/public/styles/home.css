@@ -44,7 +44,9 @@
   display: block;
 }
 
-.page-name,
+.page-name {
+  text-align: start;
+}
 .coffee-write {
   text-align: end;
 }
