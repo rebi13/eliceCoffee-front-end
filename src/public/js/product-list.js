@@ -21,9 +21,6 @@ if (categoryId === "country") {
 } else if (categoryId === "supplies") {
     category1 = "커피용품";
     category2 = "커피용품";
-} else if (categoryId === "Supplies") {
-    category1 = "커피용품";
-    category2 = "커피용품";
 }
 
 // 마크업
@@ -60,8 +57,9 @@ let contentTail = `
 
 // 상품 리스트 생성
 function content (data) {
-    const { id, name, description, price } = data;
+    const { id, name, description, price, mainImage } = data;
     const productUrl = `/product/${ id }`;
+    const imgSrc = `/assets/thumbnail/${ categoryId }/${ id }/${ mainImage }`;
 
     return `
         <div class="col-md-4">
@@ -70,12 +68,12 @@ function content (data) {
                 <a href="${ productUrl }">
                     <div class="product-thumb">
                         <span class="bage">Best</span>
-                        <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" />
+                        <img class="img-responsive" src="${ imgSrc }" />
                     </div>
                 </a>
                 
                 <div class="product-content">
-                    <h4><a href="${productUrl}"><b>${ name }</b></a></h4>
+                    <h4><a href="${ productUrl }"><b>${ name }</b></a></h4>
                     <p class="taste">${ description }</p>
                     <p class="price">${ g.setParseStringAmount(price) }원</p>
                 </div>
