@@ -115,7 +115,7 @@ fetch(API_URL)
                 <div class="col-md-4">
                     <div class="product-item">
                         <div class="product-thumb">
-                            <img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img" />
+                            <a href="/product/${e.productId}"><img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img"/></a>
                             <div class="preview-meta">
                             </div>
                         </div>
@@ -149,7 +149,7 @@ fetch(API_URL)
                 <div class="col-md-4">
                     <div class="product-item">
                         <div class="product-thumb">
-                            <a href="/products/:productid"> <img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img" /> </a>
+                            <a href="/product/${e.id}"> <img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img" /> </a>
                             <div class="preview-meta">
                             </div>
                         </div>
@@ -168,7 +168,6 @@ fetch(API_URL)
           contentCenter = contentCenter.replaceAll('{price}', g.setParseStringAmount(e.price));
           contentHead2 += contentCenter;
         });
-        console.log(result);
 
         contentHead2 += contentTail;
 
