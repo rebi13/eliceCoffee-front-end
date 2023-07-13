@@ -7,9 +7,9 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../views/product-list.html'));
 });
 
-router.get('/:categoryId', (req, res) => {
-    
-    res.sendFile(path.join(__dirname, '../views/product-list.html'));
+router.get('/:productId', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/product-detail.html'));
+ 
 });
 
 module.exports = router;
