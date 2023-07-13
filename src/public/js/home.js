@@ -120,7 +120,7 @@ fetch(API_URL)
                             </div>
                         </div>
                         <div class="product-content">
-                            <h4><a href="product-single.html">{name}</a></h4>
+                            <h4><a href="product/${e.productId}">{name}</a></h4>
                             <p class="taste">
                                 {discription}
                             </p>
