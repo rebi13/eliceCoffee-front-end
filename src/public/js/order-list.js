@@ -22,12 +22,12 @@ const emptyPage = `
 `;
 
 function renderProduct(item) {
-    const { name, option, quantity, price, mainImage } = item;
+    const { id, name, option, quantity, categoryId, price, mainImage } = item;
 
     return `
         <tr>
             <td>
-                <img src="/assets/thumbnail/${mainImage}" alt="제품사진" />
+                <img src="/assets/thumbnail/${categoryId}/${id}/${mainImage}" alt="제품사진" />
             </td>
             <td class="product-info">
                 <a href="#">${name}</a>
