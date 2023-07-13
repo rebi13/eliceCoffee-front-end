@@ -33,10 +33,10 @@ const API_URL = API_END_POINT;
 //   option: "200g",
 // };
 
-const samplebaskets = JSON.parse(localStorage.getItem("baskets")) || []; // 로컬 장바구니 불러오기, 데이터 없으면 배열로 장바구니 생성.
-samplebaskets.push(cartData);
-samplebaskets.push(cartData2);
-localStorage.setItem("baskets", JSON.stringify(samplebaskets));
+// const samplebaskets = JSON.parse(localStorage.getItem("baskets")) || []; // 로컬 장바구니 불러오기, 데이터 없으면 배열로 장바구니 생성.
+// samplebaskets.push(cartData);
+// samplebaskets.push(cartData2);
+// localStorage.setItem("baskets", JSON.stringify(samplebaskets));
 
 const body = document.querySelector("body");
 const baskets = JSON.parse(localStorage.getItem("baskets")); // 장바구니
@@ -218,9 +218,8 @@ submitBtn.addEventListener("click", async (event) => {
 
   let postResult = await postOrder(orderData);
   // 주문완료시 페이지 이동 필요
-  if (!!postResult.error) {
-    const data = new URLSearchParams(postResult.data).toString();
-    g.redirectUserPage(`/pay/complete?data=${data}`);
+  if (!postResult.error) {
+    g.redirectUserPage(`/pay/complete?id=${postResult.data._id}`);
   }
   throw new Error(postResult.error);
 });
