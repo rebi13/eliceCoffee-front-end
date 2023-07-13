@@ -44,7 +44,7 @@ function renderOrder(orderData) {
     
     const totalPrice = g.setParseStringAmount(itemTotal);
     const displayDate = g.formatDate(createdAt);
-    const canChangeOrder = validateCancel("status") ? "" : "disabled";
+    const canChangeOrder = validateCancel(status) ? "" : "disabled";
 
     return `
         <div class="block">
@@ -82,6 +82,7 @@ function renderOrder(orderData) {
                     <button 
                         class="btn btn-default cancelBtn" 
                         data-status="${status}"
+                        data-id="${_id}"
                         ${canChangeOrder}
                     >
                         주문취소
@@ -147,7 +148,7 @@ async function init() {
         makeTemplate(body, render(result.data));
 
         const cancelBtns = document.querySelectorAll('.cancelBtn');
-        cancelBtns.forEach((btn) => btn.addEventListener('click', cancelOrder));
+        cancelBtns.forEach((btn) => btn.addEventListener('click', handleCancelBtn));
     } catch(err) {
         console.error(err);
         alert("데이터를 받아오던 중 에러가 발생했습니다.");
@@ -156,15 +157,48 @@ async function init() {
 
 function validateCancel(status) {
     const isCancelable = !(
-        deliveryStatus[status] === "배송중" || 
-        deliveryStatus[status] === "배송완료"
+        "shipping" === status ||
+        "delivered" === status ||
+        "pending" === status ||
+        "canceled" === status
     );
     
     return isCancelable;
 }
 
-function cancelOrder(event) {
+async function cancelOrder(orderId, orderStatus) {
+    try {
+        const response = await fetch(`${API_END_POINT}/orders/${orderId}/cancel`, {
+            method: 'PUT',
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            throw new Error("주문취소에 실패하였습니다.");
+        }
+
+        if (deliveryStatus[orderStatus] === "배송준비중") {
+            window.alert("상품을 준비중이어서 관리자의 승인 여부에 따라 취소가 불가할 수 있습니다.");
+        } else {
+            window.alert("주문이 정상적으로 취소되었습니다.");
+        }
+        
+        window.location.reload();
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+function handleCancelBtn(event) {
+    const shouldCancel = window.confirm("주문을 취소하시겠습니까?");
+
+    if (!shouldCancel) {
+        return;
+    }
+
     const btn = event.target.closest(".cancelBtn");
+    const orderId = btn.dataset.id;
     const orderStatus = btn.dataset.status;
 
     // shipping, deliveryComplete인 경우 alert
@@ -173,11 +207,5 @@ function cancelOrder(event) {
         return;
     }
 
-    // 배송준비중
-    if (deliveryStatus[orderStatus] === "배송준비중") {
-        alert("상품을 준비중이어서 관리자의 승인 여부에 따라 취소가 불가할 수 있습니다.");
-        return;
-    }
-
-    alert("주문이 취소되었습니다.");
+    cancelOrder(orderId, orderStatus);
 }
