@@ -10,7 +10,7 @@ const directFlag = urlParams.get("direct");
 // 바로 결제 / 장바구니에서 결제 분기
 const baskets = !!directFlag
   ? JSON.parse(localStorage.getItem("directPay"))
-  : JSON.parse(localStorage.getItem("baskets")); // 장바구니
+  : JSON.parse(localStorage.getItem("checkedCartList")); // 장바구니
 let totalPrice = 0; // 총 주문 금액 저장
 
 const user = await getUserInfo();
@@ -143,12 +143,19 @@ const render = () => {
                 `;
     totalPrice += basket.quantity * basket.price;
   });
+  let fee = 3000;
+  if (totalPrice > 50000) {
+    fee = 0;
+  } else {
+    totalPrice += fee;
+  }
   content += `
                                         </table>
                                     </div>
                                 </div>
                             </div>
                             <div class="footer text-right">
+                                <p class="total-price">배송비 : ${fee}원</p>
                                 <p class="total-price">총액 : {totalPrice}원</p>
                             <div>
                                 <button type="button" class="btn btn-main text-center" id="submitBtn">주문하기</button>
