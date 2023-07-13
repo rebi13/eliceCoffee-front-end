@@ -27,7 +27,7 @@ function renderProduct(item) {
     return `
         <tr>
             <td>
-                <img src="${mainImage}" alt="제품사진" />
+                <img src="/assets/thumbnail/${mainImage}" alt="제품사진" />
             </td>
             <td class="product-info">
                 <a href="#">${name}</a>
@@ -44,7 +44,7 @@ function renderOrder(orderData) {
     
     const totalPrice = g.setParseStringAmount(itemTotal);
     const displayDate = g.formatDate(createdAt);
-    const canOrderChange = validateCancel("status") ? "" : "disabled";
+    const canChangeOrder = validateCancel("status") ? "" : "disabled";
 
     return `
         <div class="block">
@@ -75,14 +75,14 @@ function renderOrder(orderData) {
                     <a 
                         href="order/edit?orderId=${_id}"
                         class="btn btn-default"
-                        ${canOrderChange}
+                        ${canChangeOrder}
                     >
                         주문수정
                     </a>
                     <button 
                         class="btn btn-default cancelBtn" 
                         data-status="${status}"
-                        ${canOrderChange}
+                        ${canChangeOrder}
                     >
                         주문취소
                     </button>
