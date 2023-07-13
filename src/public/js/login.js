@@ -22,7 +22,7 @@ const loginHTML = `
                                 <button type="submit" id="submitButton" class="btn btn-main text-center">LOGIN</button>
                             </div>
                         </form>
-                        <p class="mt-20">처음 이신가요 ? <a href="../register"> 회원가입</a></p>
+                        <p class="mt-20">처음 이신가요 ? <a href="/register"> 회원가입</a></p>
                     </div>
                 </div>
             </div>

@@ -1,82 +1,100 @@
-// import g from "/common/common.js";
+import { makeTemplate } from "/js/common/template.js";
 
-/**
-{
-    "_id": "64aa59be2fcdf059ffc9246d",
-    "id": "costarica",
-    "name": "costarica",
-    "categoryId": "testcategoryId",
-    "price": 14900,
-    "keyword": [],
-    "description": "desc",
-    "mainImage": "costarica",
-    "subImage": [
-        "sub1111",
-        "sub2222"
-    ],
-    "__v": 0
-}
- */
+const cartContent = 
+        `
+        <section class="page-header">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="content">
+                                <h1 class="page-name">Cart</h1>
+                                <ol class="breadcrumb">
+                                    <li><a href="#">Home</a>&nbsp;&gt;</li>
+                                    <li class="active">&nbsp;cart</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-let cartData = {
-    id: '64aa59be2fcdf059ffc9246d',
-    name: "Brazil Cerrado",
-    categoryId: "testcategoryId",
-    price: 3400,
-    keyword: [],
-    description: "desc",
-    mainImage: "../../assets/thumbnail/brazil-cerrado.jpg",
-    subImage: [
-        "sub1111",
-        "sub2222"
-    ],
-    quantity: 1,
-    option: '200g',
-};
+            <section id="contentsArea" class="section">
+                <div class="container">
+                    <div id="cart-container">
+                        <div class="cart-products-container" style="width: 100%;" id="cartProductsContainer">
 
-let cartData2 = {
-    id: '71aa59be2fcdf059ffc9246d',
-    name: "Brazil Santos",
-    categoryId: "testcategoryId2",
-    price: 3200,
-    keyword: [],
-    description: "desc",
-    mainImage: "../../assets/thumbnail/brazil-santos.jpg",
-    subImage: [
-        "sub1111",
-        "sub2222"
-    ],
-    quantity: 1,
-    option: '300g',
-};
+                            <!-- 장바구니 테이블 -->
+                            <div>
+                                <table>
+                                    <colgroup>
+                                        <col style="width:27px">        <!--체크박스-->
+                                        <col style="width:100px">       <!--이미지-->
+                                        <col style="width:auto">        <!--상품정보-->
+                                        <col style="width:98px">        <!--판매가-->
+                                        <col style="width:75px">        <!--수량-->
+                                        <col style="width:85px">        <!--배송비-->
+                                        <col style="width:110px">       <!--합계-->
+                                    </colgroup>
+                                    <thead class="cart-product-header">
+                                        <tr>
+                                            <th scope="col"><input id="select-all-header" type="checkbox"></th>
+                                            <th scope="col">이미지</th>
+                                            <th scope="col">상품정보</th>
+                                            <th scope="col">판매가</th>
+                                            <th scope="col">수량</th>
+                                            <th scope="col">배송비</th>
+                                            <th scope="col">합계</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <!-- 장바구니 리스트 시작 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-let cartData3 = {
-    id: '83aa59be2fcdf059ffc9246d',
-    name: "colombia-supremo",
-    categoryId: "testcategoryId3",
-    price: 5500,
-    keyword: [],
-    description: "desc",
-    mainImage: "../../assets/thumbnail/colombia-supremo.jpg",
-    subImage: [
-        "sub1111",
-        "sub2222"
-    ],
-    quantity: 3,
-    option: '400g',
-};
+                        <div id="remove-selected-btn">
+                            <button>선택삭제</button>
+                        </div>
+                        
+                        <!-- 결제금액 -->
+                        <div class="tile is-parent tile-order-summary ml-5">
+                            <div class="box order-summary">
+                                <div class="order-info">
+                                    <div class="info">
+                                        <p>총 상품금액</p>
+                                        <p id="total-amount"></p>
+                                    </div>
+                                    <div class="info">
+                                        <p>배송비</p><br>
+                                        <p id="total-shipping-fee"></p>
+                                    </div>
+                                </div>
+                                <div class="total">
+                                    <p>총 결제금액</p>
+                                    <p class="total-payment" id="total-payment"></p>
+                                </div>
+                            </div>
+                            <div class="purchase">
+                                <button class="button is-info" id="order-selected-btn">선택상품주문</button>
+                                <button class="button is-info" id="order-all-btn">전체상품주문</button>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </section>
+        `;
 
-// 장바구니 데이터 생성
-// const baskets = JSON.parse(localStorage.getItem("baskets")) || [];      // 로컬 장바구니 불러오기, 데이터 없으면 배열로 장바구니 생성.
-// baskets.push(cartData);
-// localStorage.setItem("baskets", JSON.stringify(baskets));
-// baskets.push(cartData2);
-// localStorage.setItem("baskets", JSON.stringify(baskets));
-// baskets.push(cartData3);
-// localStorage.setItem("baskets", JSON.stringify(baskets));
+const body = document.querySelector('body');
+makeTemplate(body, cartContent);
 
 
+// 장바구니 localStorage 생성
 const cartList = JSON.parse(localStorage.getItem("baskets")) || [];
+let checkedCartList = [];           // 체크된 상품 넣는 배열
 
 
 const tbody = document.querySelector('tbody');                                  // 장바구니 리스트 tbody
@@ -120,7 +138,14 @@ function updateTotalPrice(quantity, price, priceAmount=0) {      // 수량, 가�
 
 // 장바구니 리스트 생성 함수
 function cartItemCreate(cartItem) {
-    const { _id, name, price, mainImage, quantity, option } = cartItem;
+    const { categoryId, id, keyWord, name, price, mainImage, quantity, option } = cartItem;
+    
+    const productUrl = `/product/${ id }`;
+    const mainImgSrc = `/assets/thumbnail/${categoryId}/${id}/${mainImage}`;
+    let keyword = "";
+    keyWord.forEach((e) => {
+        keyword += `#${e}`;
+    });
 
     const localePrice = price.toLocaleString() + "원";
     const localePriceAmount = (quantity * price).toLocaleString() + "원";
@@ -131,12 +156,13 @@ function cartItemCreate(cartItem) {
                     <input type="checkbox"  class="product-checkbox-input">
                 </td>
                 <td>
-                    <a href="#">
-                        <img class="cart-product-image" src=${ mainImage } alt="브라질 세라도">
+                    <a href="${ productUrl }">
+                        <img class="cart-product-image" src=${ mainImgSrc } alt="브라질 세라도">
                     </a>
                 </td>
                 <td class=cart-product-info>
-                    <a href="#">${ name }</a>
+                    <a href="${ productUrl }"><strong>${ name }</strong></a>
+                    <p>${ keyword }</p>
                     <p>[ 옵션: ${ option } ]</p>
                 </td>     
                 <td>${ localePrice }</td>
@@ -157,9 +183,9 @@ function cartItemCreate(cartItem) {
 
 // 장바구니 리스트 생성
 cartList.forEach(cartItem => {
-    const cartContent = cartItemCreate(cartItem);
+    const cartItems = cartItemCreate(cartItem);
 
-    tbody.insertAdjacentHTML('beforeend', cartContent);
+    tbody.insertAdjacentHTML('beforeend', cartItems);
     updateTotalPrice(cartItem.quantity, cartItem.price);
 })
 
@@ -257,7 +283,7 @@ removeSelectedButton.addEventListener("click", function () {
     productCheckboxes.forEach(checkbox => {         
         checkboxStatus.push(checkbox.checked);      
         
-        if (checkbox.checked) {
+        if (checkbox.checked) {                     // 체크박스에 체크되어 있으면 checkCount 증가
             checkCount++;
         }
     })
@@ -292,25 +318,35 @@ orderSelectedButton.addEventListener("click", function () {
     productCheckboxes.forEach(checkbox => {         
         checkboxStatus.push(checkbox.checked);      
         
-        if (checkbox.checked) {
+        if (checkbox.checked) {                     // 체크박스에 체크되어 있으면 checkCount 증가
             checkCount++;
         }
     })
 
-    // 체크된 체크박스가 없는데 선택삭제 버튼을 누를 경우
+    // 체크된 체크박스가 없는데 선택주문 버튼을 누를 경우
     if (checkCount === 0) {
         alert("선택된 상품이 없습니다.");
 
-    } else {
-    // 결제 페이지로 이동
+    } else {    // 선택된 상품 주문
+        const cartList = JSON.parse(localStorage.getItem("baskets"));
+
+        checkboxStatus.forEach((checkStatus, index) => {
+            if(checkStatus) {
+                checkedCartList.push(cartList[index]);
+            }
+        })
+
+        localStorage.setItem("checkedCartList", JSON.stringify(checkedCartList));
+        checkedCartList = [];
+        location.href = "/pay";
     }
 });
 
 // 전체 주문 버튼
 orderAllButton.addEventListener("click", function () {
-    const selectedProducts = cartList.filter((product) => product.checked);
-    if (selectedProducts.length === 0) {
-        return;
-    }
-    // 주문 처리 로직 작성
+    const cartList = JSON.parse(localStorage.getItem("baskets"));
+    localStorage.setItem("checkedCartList", JSON.stringify(cartList));
+    checkedCartList = [];
+    location.href = "/pay";
+
 });
