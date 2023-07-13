@@ -115,22 +115,8 @@ fetch(API_URL)
                 <div class="col-md-4">
                     <div class="product-item">
                         <div class="product-thumb">
-                            <a href=""> <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" /> </a>
+                            <img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img" />
                             <div class="preview-meta">
-                                <ul>
-                                    <!-- <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li> -->
-                                    <!-- <li>
-                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
-                                    </li> -->
-                                </ul>
                             </div>
                         </div>
                         <div class="product-content">
@@ -149,6 +135,7 @@ fetch(API_URL)
       contentHead += contentCenter;
     });
 
+
     //커피용품
     const API_URL2 = 'http://localhost:3001/api/v1/products/main/supplies';
     fetch(API_URL2)
@@ -162,22 +149,8 @@ fetch(API_URL)
                 <div class="col-md-4">
                     <div class="product-item">
                         <div class="product-thumb">
-                            <a href="/products/:productid"> <img class="img-responsive" src="../../../assets/thumbnail/brazil-cerrado.jpg" alt="product-img" /> </a>
+                            <a href="/products/:productid"> <img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img" /> </a>
                             <div class="preview-meta">
-                                <ul>
-                                    <!-- <li>
-                                        <span  data-toggle="modal" data-target="#product-modal">
-                                            <i class="tf-ion-ios-search-strong"></i>
-                                        </span>
-                                    </li> -->
-                                    <!-- <li>
-                                        <a href="#!"><i class="fa-solid fa-heart" style="color: black;"></i>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!"><i class="fa-solid fa-cart-shopping" style="color: black;"></i></a>
-                                    </li> -->
-                                </ul>
                             </div>
                         </div>
                         <div class="product-content">
@@ -195,6 +168,7 @@ fetch(API_URL)
           contentCenter = contentCenter.replaceAll('{price}', g.setParseStringAmount(e.price));
           contentHead2 += contentCenter;
         });
+        console.log(result);
 
         contentHead2 += contentTail;
 
