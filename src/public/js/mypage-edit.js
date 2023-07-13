@@ -147,13 +147,12 @@ async function handleSubmit(event) {
     event.preventDefault();
     
     const email = event.target.email.value;
-    const address = event.target.address.value;
     const phone = event.target.phone.value;
     const newPassword = event.target.newPassword.value;
     const confirmNewPassword = event.target.confirmNewPassword.value;
 
     try {
-        const newUserInfo = { email, address, phone };
+        const newUserInfo = { email, phone };
 
         if (newPassword || confirmNewPassword) {
             const isValid = validatePassword(newPassword, confirmNewPassword);
