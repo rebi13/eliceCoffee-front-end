@@ -22,7 +22,7 @@ const emptyPage = `
 `;
 
 function renderProduct(item) {
-    const { name, option, count, price, mainImage } = item;
+    const { name, option, quantity, price, mainImage } = item;
 
     return `
         <tr>
@@ -31,16 +31,16 @@ function renderProduct(item) {
             </td>
             <td class="product-info">
                 <a href="#">${name}</a>
-                <p>[ 옵션: ${option.weight}g ]</p>
+                <p>[ 옵션: ${option} ]</p>
             </td>
-            <td>${count}</td>
-            <td>${price.toLocaleString('en')}원</td>
+            <td>${quantity}</td>
+            <td>${g.setParseStringAmount(price)}원</td>
         </tr>
     `;
 }
 
 function renderOrder(orderData) {
-    const { id, items, status, itemTotal, createdAt } = orderData;
+    const { _id, items, status, itemTotal, createdAt } = orderData;
     
     const totalPrice = g.setParseStringAmount(itemTotal);
     const displayDate = g.formatDate(createdAt);
@@ -48,7 +48,7 @@ function renderOrder(orderData) {
 
     return `
         <div class="block">
-            <h4 class="widget-title">${displayDate} (${id})</h4>
+            <h4 class="widget-title">${displayDate} (${_id})</h4>
             <p class="status">${deliveryStatus[status]}</p>
             <table class="table">
                 <colgroup>
@@ -73,7 +73,7 @@ function renderOrder(orderData) {
                 <p class="total-price">총액 : ${totalPrice}원</p>
                 <div>
                     <a 
-                        href="order/edit?orderId=${id}"
+                        href="order/edit?orderId=${_id}"
                         class="btn btn-default"
                         ${canOrderChange}
                     >
