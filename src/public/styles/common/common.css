@@ -2,7 +2,6 @@
 
 header {
   position: sticky;
-  z-index: 1;
   /* width: 100%; */
   top: 0;
   left: 0;
@@ -13,6 +12,7 @@ header {
   padding: 0 15px;
   background-color: #7b6d66;
   height: 50px;
+  z-index: 99;
 }
 
 header h1 {
@@ -41,7 +41,6 @@ a:hover {
 
 nav {
   position: sticky;
-  z-index: 1;
   top: 50px;
   left: 0;
   right: 0;
@@ -53,6 +52,7 @@ nav {
   background-color: #7b6d66;
   height: 50px;
   /* width: 100%; */
+  z-index: 99;
 }
 
 nav ul {
