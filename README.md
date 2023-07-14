@@ -13,3 +13,6 @@ git config --global core.autocrlf true
 
 id: "elicecoffee"
 pw: "Qwer1234!!"
+
+접속 링크
+http://kdt-sw-5-team03.elicecoding.com/
