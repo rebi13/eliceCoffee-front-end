@@ -33,8 +33,8 @@ async function getOrderInfo() {
   localStorage.setItem(
     "baskets",
     !baskets
-      ? JSON.stringify(baskets.filter((x) => !productIds.includes(x.id)))
-      : []
+      ? []
+      : JSON.stringify(baskets.filter((x) => !productIds.includes(x.id)))
   );
 
   // 주문 완료한 장바구니 데이터는 로컬스토리지 비우기
