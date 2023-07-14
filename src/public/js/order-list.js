@@ -48,7 +48,7 @@ function renderOrder(orderData) {
 
     return `
         <div class="block">
-            <h4 class="widget-title">${displayDate} (${_id})</h4>
+            <h4 class="widget-title">${displayDate} (주문번호: ${_id})</h4>
             <p class="status">${deliveryStatus[status]}</p>
             <table class="table">
                 <colgroup>
