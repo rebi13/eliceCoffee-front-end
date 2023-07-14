@@ -45,6 +45,7 @@ async function getOrderInfo() {
 
 function renderProduct() {
   return `
+  <main>
   <div class="block">
   <h4 class="widget-title">${g.formatDate(order.createdAt)}</h4>
   <p class="status">${deliveryStatus[order.status]}</p>
@@ -83,6 +84,7 @@ function renderProduct() {
       </div>
   </div>
 </div>
+</main>
 
       
   `;
