@@ -39,12 +39,24 @@ fetch(API_URL)
 
         // 이미 존재하면
         updateTotalPrice(price);
-        quantityInput = document.querySelector("#option-count-input");
+        const quantityInput = document.querySelector("#option-count-input");
         quantityButton = document.querySelector(".option-count-button");
         quantityIncreaseButton = quantityButton.firstElementChild;
         quantityDecreaseButton = quantityButton.lastElementChild;
         quantityDeleteButton = document.querySelector("#delete-button");
 
+        // 상품 수량 값이 변하면
+        quantityInput.addEventListener("change", function() {
+          // 상품 수량 alert
+          if (quantityInput.value < 1) {
+            alert("최소 주문 수량은 1개입니다.");
+            return;
+          } else {
+            updateTotalPrice(price);
+          }
+        });
+
+        // 상품 수량 증가/감소, 상품 삭제
         quantityIncreaseButton.addEventListener("click", function () {
           increaseQuantity(price);
         });
@@ -62,17 +74,19 @@ fetch(API_URL)
       document.querySelector(".buy-button").firstElementChild;
     setCartButton.addEventListener("click", function () {
       const itemCount = document.querySelector("tr");
+      const quantity = +document.querySelector("#option-count-input").value
+
 
       // 선택한 옵션이 없을 경우
       if (itemCount === null) {
         alert("상품을 선택해주세요.");
         return;
+      } else if (quantity < 1) {
+        alert("최소 주문 수량은 1개입니다.");
+        return;
       } else {
         const option =
           document.querySelector(".option-name").firstElementChild.textContent;
-        const quantity = Number(
-          document.querySelector(".option-count").firstElementChild.value
-        );
 
         const cartItem = {
           categoryId: categoryId,
@@ -88,6 +102,7 @@ fetch(API_URL)
           check: false,
           _id: _id,
         };
+
 
         const baskets = JSON.parse(localStorage.getItem("baskets")) || []; // 로컬 장바구니 불러오기, 데이터 없으면 배열로 장바구니 생성.
         const index = baskets.findIndex(data => data.id == cartItem.id);    // 장바구니에 중복된 상품이 있는지 확인
@@ -156,7 +171,6 @@ fetch(API_URL)
     });
   });
 
-let quantityInput = "";
 let quantityButton = "";
 let quantityIncreaseButton = "";
 let quantityDecreaseButton = "";
@@ -177,10 +191,14 @@ function productContent(data) {
     _id,
   } = data;
 
-  const mainImgSrc = `/assets/thumbnail/${categoryId}/${id}/${mainImage}`;
-  const subImgSrc1 = `/assets/thumbnail/${categoryId}/${id}/${subImage[0]}`;
-  const subImgSrc2 =
-    `/assets/thumbnail/${categoryId}/${id}/${subImage[1]}` || "";
+
+  const mainImgSrc = `/assets/thumbnail/${categoryId}/${id}/${mainImage}`;        // 상품 이미지
+  let subImgSrc = '';                                                             // 상품 상세 이미지
+
+  subImage.forEach( data => {
+    subImgSrc += `<img src=/assets/thumbnail/${ categoryId }/${id}/${data}>`;
+  })
+ 
   let totalPrice = 0;
 
   let keyword = "";
@@ -284,8 +302,7 @@ function productContent(data) {
                     <div class="detail-container mt-20">
                         <a style="font-size: 30px; margin-top: 10%;">Details</a>
                         <div class="details-img">
-                            <img src="${subImgSrc1}">
-                            <img src="${subImgSrc2}">
+                            ${ subImgSrc }
                         </div>
                     </div>
                 </div>
