@@ -4,6 +4,7 @@ import g from "/js/common/common.js";
 
 const productId = window.location.pathname.split("/")[2]; // 마지막 pathname
 const API_URL = `${API_END_POINT}/products/${productId}`;
+const maxQuantity = 99;
 
 fetch(API_URL)
   .then((res) => res.json())
@@ -46,11 +47,14 @@ fetch(API_URL)
         quantityDeleteButton = document.querySelector("#delete-button");
 
         // 상품 수량 값이 변하면
-        quantityInput.addEventListener("change", function() {
+        quantityInput.addEventListener("input", function() {
+
           // 상품 수량 alert
-          if (quantityInput.value < 1) {
+          if (quantityInput.value < 0) {
             alert("최소 주문 수량은 1개입니다.");
             return;
+          } else if (quantityInput.value > maxQuantity) {
+            quantityInput.value = maxQuantity;
           } else {
             updateTotalPrice(price);
           }
@@ -336,7 +340,7 @@ function addItem(data) {
             </td>
             <td>
                 <div class="option-count">
-                    <input type="text" size="1" value="1" id="option-count-input">
+                    <input type="text" size="1" value="1" id="option-count-input" maxlength="3" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" >
                     <span class="option-count-button">
                         <img src="https://img.echosting.cafe24.com/design/skin/default/product/btn_count_up.gif" alt="수량증가">
                         <img src="https://img.echosting.cafe24.com/design/skin/default/product/btn_count_down.gif" alt="수량감소">
@@ -372,21 +376,24 @@ function updateTotalPrice(price) {
 
 // 수량 증가
 function increaseQuantity(price) {
-  const quantity = document.querySelector("#option-count-input");
-  document.querySelector("#option-count-input").value = +quantity.value + 1;
-  updateTotalPrice(price);
+  const quantity = document.querySelector("#option-count-input").value;
+  if (quantity < maxQuantity) {
+    document.querySelector("#option-count-input").value = +quantity + 1;
+    updateTotalPrice(price);  
+  }
 }
 
 // 수량 감소
 function decreaseQuantity(price) {
-  const quantity = Number(document.querySelector("#option-count-input").value);
+  const quantity = document.querySelector("#option-count-input").value;
   if (quantity > 1) {
-    document.querySelector("#option-count-input").value = quantity - 1;
+    document.querySelector("#option-count-input").value = +quantity - 1;
     updateTotalPrice(price);
   } else {
     alert("최소 주문수량은 1개입니다.");
   }
 }
+
 
 // 상품 삭제
 function removeProduct(t) {
