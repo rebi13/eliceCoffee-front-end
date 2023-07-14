@@ -36,7 +36,11 @@ const g = {
    * @returns string example) 2023-07-10 15:43
    */
   formatDate(date) {
-    const dt = new Date(date);
+    // 한국시간 차이 분단위
+    const koreaTimezoneOffset = 9 * 60;
+    const serverDate = new Date(date);
+    const dt = new Date(serverDate.getTime() - koreaTimezoneOffset * 60 * 1000);
+
     return (
       dt.getFullYear() +
       "-" +
