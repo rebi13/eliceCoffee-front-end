@@ -1,6 +1,6 @@
 import g from '../js/common/common.js';
 import { makeTemplate } from "./common/template.js";
-import { API_END_POINT } from "../constants/index.js";
+import { API_END_POINT, validateRegex } from "../constants/index.js";
 
 /* 렌더링 로직 */
 let orderId = null;
@@ -117,6 +117,30 @@ async function updateOrder(newOrderData) {
     }
 }
 
+function validateCheck(receiver, receiverPhone, address) {
+    if (!receiver) {
+        window.alert("수취인 이름을 입력해주세요.");
+        return;
+    }
+
+    if (!address) {
+        window.alert("배송받을 주소를 입력해주세요.");
+        return;
+    }
+    
+    if (!receiverPhone) {
+        window.alert("수취인의 연락처를 입력해주세요.");
+        return;
+    }
+
+    if (!validateRegex.tel.test(receiverPhone)) {
+        window.alert("유효하지 않은 전화번호 형식입니다.");
+        return;
+    }
+
+    return true;
+}
+
 function handleSubmit(event) {
     event.preventDefault();
 
@@ -126,9 +150,11 @@ function handleSubmit(event) {
         const receiver = event.target.name.value;
         const receiverPhone = event.target.phoneNumber.value;
         const address = event.target.address.value;
-        
-        const newOrderData = { receiver, receiverPhone, address, isOrderCancel: false };
 
-        updateOrder(newOrderData);
+        if (validateCheck(receiver, receiverPhone, address)) {
+            const newOrderData = { receiver, receiverPhone, address, isOrderCancel: false };
+
+            updateOrder(newOrderData);
+        }
     }
 }
