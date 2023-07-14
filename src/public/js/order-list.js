@@ -44,7 +44,7 @@ function renderOrder(orderData) {
     
     const totalPrice = g.setParseStringAmount(itemTotal);
     const displayDate = g.formatDate(createdAt);
-    const canChangeOrder = validateCancel(status) ? "" : "disabled";
+    const canChangeOrder = validateChangeOrder(status);
 
     return `
         <div class="block">
@@ -73,9 +73,10 @@ function renderOrder(orderData) {
                 <p class="total-price">총액 : ${totalPrice}원</p>
                 <div>
                     <a 
-                        href="order/edit?orderId=${_id}"
-                        class="btn btn-default"
-                        ${canChangeOrder}
+                        href="${canChangeOrder ? `order/edit?orderId=${_id}` : "#"}"
+                        class="btn btn-default modifyBtn"
+                        data-status="${status}"
+                        ${canChangeOrder ? "" : "disabled"}
                     >
                         주문수정
                     </a>
@@ -83,7 +84,7 @@ function renderOrder(orderData) {
                         class="btn btn-default cancelBtn" 
                         data-status="${status}"
                         data-id="${_id}"
-                        ${canChangeOrder}
+                        ${canChangeOrder ? "" : "disabled"}
                     >
                         주문취소
                     </button>
@@ -149,13 +150,16 @@ async function init() {
 
         const cancelBtns = document.querySelectorAll('.cancelBtn');
         cancelBtns.forEach((btn) => btn.addEventListener('click', handleCancelBtn));
+
+        const modifyBtns = document.querySelectorAll('.modifyBtn');
+        modifyBtns.forEach((btn) => btn.addEventListener('click', handleModifyBtn))
     } catch(err) {
         console.error(err);
         alert("데이터를 받아오던 중 에러가 발생했습니다.");
     }
 }
 
-function validateCancel(status) {
+function validateChangeOrder(status) {
     const isCancelable = !(
         "shipping" === status ||
         "delivered" === status ||
@@ -190,6 +194,17 @@ async function cancelOrder(orderId, orderStatus) {
     }
 }
 
+function handleModifyBtn(event) {
+    event.preventDefault();
+
+    const btn = event.target.closest(".modifyBtn");
+    const orderStatus = btn.dataset.status;
+
+    if (validateChangeOrder(orderStatus)) {
+        window.location.href = event.target.href;
+    }
+}
+
 function handleCancelBtn(event) {
     const shouldCancel = window.confirm("주문을 취소하시겠습니까?");
 
@@ -202,7 +217,7 @@ function handleCancelBtn(event) {
     const orderStatus = btn.dataset.status;
 
     // shipping, deliveryComplete인 경우 alert
-    if (!validateCancel(orderStatus)) {
+    if (!validateChangeOrder(orderStatus)) {
         alert("이미 배송이 시작되어 주문 취소가 불가합니다.");
         return;
     }
