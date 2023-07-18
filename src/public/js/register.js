@@ -60,6 +60,8 @@ let idValidation = false; // 아이디 중복체크 통과상태
 
 // 회원가입 유효성 검사
 const regexCheck = () => {
+  // TODO : api 요청 보낼 때 변수명 똑같이 해서 보내기
+
   const userId = userIdInput.value;
   const userPwd = userPwdInput.value;
   const userPwdChk = userPwdChkInput.value;
@@ -74,7 +76,7 @@ const regexCheck = () => {
   const emailCheck = validateRegex.email.test(userEmail);
   const telCheck = validateRegex.tel.test(userTel);
 
-  if (userId == "") {
+  if (!userId.length) {
     alert("아이디를 입력해주세요.");
     userIdInput.focus();
     return;
@@ -106,13 +108,13 @@ const regexCheck = () => {
     return;
   }
 
-  if (userName == "") {
+  if (!userName.length) {
     alert("이름을 입력해주세요.");
     userNameInput.focus();
     return;
   }
 
-  if (userEmail == "") {
+  if (!userEmail.length) {
     alert("이메일을 입력해주세요.");
     emailIdInput.focus();
     return;
@@ -123,7 +125,7 @@ const regexCheck = () => {
     return;
   }
 
-  if (userTel == "") {
+  if (!userTel.length) {
     alert("전화번호를 입력해주세요.");
     userTelInput.focus();
     return;
@@ -170,7 +172,6 @@ const idDuplicateCheck = async () => {
 
 // 아이디 중복체크 상태값 반환
 async function getIdDupStatus(id) {
-  // const API_URL = "http://kdt-sw-5-team03.elicecoding.com:3001/api/v1/auth/checkDupId";
   const API_URL = `${API_END_POINT}/auth/checkDupId`;
 
   const res = await fetch(API_URL, {
