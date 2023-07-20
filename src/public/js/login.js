@@ -35,23 +35,23 @@ const loginHTML = `
 const body = document.querySelector("body");
 makeTemplate(body, loginHTML);
 
-document
-  .getElementById("submitButton")
-  .addEventListener("click", function (event) {
+const submitBtn = document.getElementById("submitButton");
+
+submitBtn.addEventListener("click", function (event) {
     event.preventDefault();
 
     // 이메일과 비밀번호 입력란의 값을 변수에 저장
-    let userId = document.querySelector("#idInput").value;
-    let userPw = document.querySelector("#passwordInput").value;
+    let id = document.querySelector("#idInput").value;
+    let pw = document.querySelector("#passwordInput").value;
 
     // 입력 값이 조건에 맞지 않을 경우(공백) 사용자에게 알려주고 focus한다.
-    if (userId.trim().length === 0) {
+    if (!id.trim().length) {
       alert("아이디를 입력해주세요.");
       document.querySelector("#idInput").focus();
       return false;
     }
 
-    if (userPw.trim().length === 0) {
+    if (!pw.trim().length) {
       alert("비밀번호를 입력해주세요.");
       document.querySelector("#passwordInput").focus();
       return false;
@@ -59,7 +59,7 @@ document
 
     // 입력 값이 조건에 맞을 경우, 로그인 처리를 진행합니다.
     // 로그인 처리를 완료한 후 메인 페이지로 이동합니다.
-    postLogin(userId, userPw);
+    postLogin(id, pw);
   });
 
 // 엔터키를 눌러도 로그인이 가능하게 한다.
