@@ -1,7 +1,6 @@
 import { makeTemplate } from "./common/template.js";
 import g from "./common/common.js";
-import { API_END_POINT } from "../constants/index.js";
-const API_URL = API_END_POINT;
+import Api from "./common/api.js";
 
 const loginHTML = `
     <main>
@@ -73,20 +72,7 @@ form.addEventListener("submit", function (event) {
 });
 
 async function postLogin(id, pw) {
-  const res = await fetch(`${API_URL}/auth/login`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    // mode: "cors",
-    method: "POST",
-    body: JSON.stringify({ id, pw }),
-  });
-  if (!res.ok) {
-    const error = await res.json();
-    alert(error.errorMessage);
-    throw new Error(error.errorMessage);
-  }
+  const res = await Api.post("/auth/login", { id, pw });
   const login = await res.json();
 
   if (login.data.isLogin) {
