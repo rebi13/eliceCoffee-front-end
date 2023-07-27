@@ -1,8 +1,8 @@
 import { makeTemplate } from "./common/template.js";
 import g from "./common/common.js";
-import { API_END_POINT } from "../constants/index.js";
+import Api from "./common/api.js";
 
-let contentHead = `
+let contentHead1 = `
     <!-- product list -->
     <section class="page-header">
         <div class="container">
@@ -103,113 +103,67 @@ let contentTail = `
 </section>
 `;
 
+// append할 body 태그 호출
+const body = document.querySelector("body");
+
 // 상품 목록 데이터 받아오기
-const API_URL = API_END_POINT; // 'http://localhost:3001/api/v1/products/main/coffee';
-fetch(`${API_URL}/products/main/coffee`)
-  .then((res) => res.json())
-  .then((data) => {
-    let result = data.data;
+const coffee = await Api.get("/products/main/coffee");
+const product = await Api.get("/products/main/supplies");
 
-    result.forEach((e) => {
-      // 데이터 수 만큼 목록 생성
-      let contentCenter = `
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <a href="/product/${e.id}"><img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img"/></a>
-                            <div class="preview-meta">
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product/${e.id}">{name}</a></h4>
-                            <p class="taste">
-                                {discription}
-                            </p>
-                            <p class="price">{price}원</p>
-                        </div>
+let coffeeContent = "";
+let productContent = "";
+
+coffee.data.forEach((e) => {
+  coffeeContent += itemTemplate(e);
+});
+
+product.data.forEach((e) => {
+  productContent += itemTemplate(e);
+});
+
+makeTemplate(
+  body,
+  contentSlider +
+    contentHead1 +
+    coffeeContent +
+    contentHead2 +
+    productContent +
+    contentTail
+);
+
+new Swiper(".swiper", {
+  // Swiper 옵션을 설정합니다.
+  autoplay: {
+    delay: 3000,
+  },
+  loop: true,
+  slidesPerView: 1,
+  centeredSlides: true,
+  observer: true,
+  observerParents: true,
+});
+
+// 상품 데이터를 태그로 만들기
+function itemTemplate(e) {
+  const { id, categoryId, mainImage, name, description, price } = e;
+  let template = `
+        <div class="col-md-4">
+            <div class="product-item">
+                <div class="product-thumb">
+                    <a href="/product/${id}"><img class="img-responsive" src="../../../assets/thumbnail/${categoryId}/${id}/${mainImage}" alt="product-img"/></a>
+                    <div class="preview-meta">
                     </div>
-                </div>                
-            `;
-      contentCenter = contentCenter.replaceAll("{name}", e.name);
-      contentCenter = contentCenter.replaceAll("{discription}", e.description);
-      contentCenter = contentCenter.replaceAll(
-        "{price}",
-        g.setParseStringAmount(e.price)
-      );
-      contentHead += contentCenter;
-    });
+                </div>
+                <div class="product-content">
+                    <h4><a href="product/${id}">${name}</a></h4>
+                    <p class="taste">
+                        ${description}
+                    </p>
+                    <p class="price">${g.setParseStringAmount(price)}원</p>
+                </div>
+            </div>
+        </div>  
+    `;
 
-    //커피용품
-    fetch(`${API_URL}/products/main/supplies`)
-      .then((res) => res.json())
-      .then((data) => {
-        let result = data.data;
-
-        result.forEach((e) => {
-          // 데이터 수 만큼 목록 생성
-          let contentCenter = `
-                <div class="col-md-4">
-                    <div class="product-item">
-                        <div class="product-thumb">
-                            <a href="/product/${e.id}"> <img class="img-responsive" src="../../../assets/thumbnail/${e.categoryId}/${e.id}/${e.mainImage}" alt="product-img" /> </a>
-                            <div class="preview-meta">
-                            </div>
-                        </div>
-                        <div class="product-content">
-                            <h4><a href="product/${e.id}">{name}</a></h4>
-                            <p class="taste">
-                                {discription}
-                            </p>
-                            <p class="price">{price}원</p>
-                        </div>
-                    </div>
-                </div>                
-            `;
-          contentCenter = contentCenter.replaceAll("{name}", e.name);
-          contentCenter = contentCenter.replaceAll(
-            "{discription}",
-            e.description
-          );
-          contentCenter = contentCenter.replaceAll(
-            "{price}",
-            g.setParseStringAmount(e.price)
-          );
-          contentHead2 += contentCenter;
-        });
-
-        contentHead2 += contentTail;
-
-        const body = document.querySelector("body");
-        makeTemplate(body, contentSlider + contentHead + contentHead2);
-        new Swiper(".swiper", {
-          // Swiper 옵션을 설정합니다.
-          autoplay: {
-            delay: 3000,
-          },
-          loop: true,
-          slidesPerView: 1,
-          centeredSlides: true,
-          observer: true,
-          observerParents: true,
-        });
-      });
-  });
-
-// const homeHTML = `
-
-// <hr>
-// <section class="page-write">
-// 	<div class="container">
-// 				<div class="content">
-// 					<h1 class="page-name">About Coffee</h1>
-// 					<ol class="">
-// 						<li class="coffee-write">"커피는 시간과 공간을 초월한 편안함의 청자입니다.<br> 그 향기를 느껴보면 일상에 활력을 불어넣어 새로운 시작으로 당신을 인도합니다."</li>
-//             <p></p>
-//             <h4 class="coffee-write">
-//               지금 이곳에서, 커피를 경험하세요!
-//             </h4>
-// 					</ol>
-// 				</div>
-// 	</div>
-// </section>
-// `;
+  return template;
+}
