@@ -1,5 +1,4 @@
-import { API_END_POINT } from "/constants/index.js";
-import { validateRegex } from "/constants/index.js";//"../constants/index.js"; // 정규표현식
+import { validateRegex } from "/constants/index.js"; // 정규표현식
 import { makeTemplate } from "./common/template.js";
 import g from "./common/common.js";
 import Api from "./common/api.js";
@@ -62,8 +61,6 @@ let idValidation = false; // 아이디 중복체크 통과상태
 
 // 회원가입 유효성 검사
 const regexCheck = () => {
-  // TODO : api 요청 보낼 때 변수명 똑같이 해서 보내기
-
   const id = idInput.value;
   const pw = pwInput.value;
   const pwChk = pwChkInput.value;
@@ -94,7 +91,7 @@ const regexCheck = () => {
     return g.centerFocus(idDuplicateButton.id);
   }
 
-  if(!pw) {
+  if (!pw) {
     alert("비밀번호를 입력해주세요.");
     return g.centerFocus(pwInput.id);
   }
@@ -107,7 +104,7 @@ const regexCheck = () => {
     return g.centerFocus(pwInput.id);
   }
 
-  if(!pwChk) {
+  if (!pwChk) {
     alert("비밀번호를 입력해주세요.");
     return g.centerFocus(pwChkInput.id);
   }
