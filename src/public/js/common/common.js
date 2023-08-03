@@ -13,9 +13,13 @@ const g = {
     let el = document.querySelector(`#${id}`);
     // 02. 해당 element가 존재한다면, 화면 가운데 해당하는 요소를 위치시키고, 포커싱을 한다.
     if (el) {
+      // 02-1. 화면을 중앙에 위치한다. GNB 등에 input 영역이 가려질 수 있다.
       el.scrollIntoView({ block: "center" });
+      // 02-2. 해당 요소에 포커싱을 한다.
       el.focus();
+      return false;
     }
+    return true;
     // 테스트 전용 코드. 필요 시 사용.
     // else {
     //     console.log(`id가 ${id}에 해당하는 element가 존재하지 않습니다.`);
@@ -72,11 +76,12 @@ const g = {
    */
   getCookie: (cookieName) => {
     const cookieMap = {};
-    const cookies = document.cookie.split(";").map(c => c.trim());
+    const cookies = document.cookie.split(";").map((c) => c.trim());
 
-    for(const cookie of cookies) {
+    for (const cookie of cookies) {
       const separatorIndex = cookie.indexOf("=");
-      const name = cookie.slice(0, separatorIndex), value = cookie.slice(separatorIndex+1);
+      const name = cookie.slice(0, separatorIndex),
+        value = cookie.slice(separatorIndex + 1);
       cookieMap[name] = value;
     }
 
@@ -90,7 +95,7 @@ const g = {
    */
   deleteCookie: (cookieName) => {
     document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-  }
+  },
 };
 
 export default g;

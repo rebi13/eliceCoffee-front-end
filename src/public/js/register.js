@@ -1,6 +1,8 @@
 import { API_END_POINT } from "/constants/index.js";
 import { validateRegex } from "/constants/index.js"; // 정규표현식
 import { makeTemplate } from "./common/template.js";
+import g from "./common/common.js";
+import Api from "./common/api.js";
 
 const content = `
   <main>
@@ -10,7 +12,7 @@ const content = `
                 <div class="col-md-6 col-md-offset-3">
                     <div class="block text-center">
                         <h2 class="text-center">회원가입</h2>
-                        <form class="text-left clearfix" action="index.html">
+                        <form id="form" class="text-left clearfix">
                             <div class="form-group form-flex">
                                 <input type="text" class="form-control"  placeholder="아이디" id="userId">
                                 <button type="button" class="btn btn-small text-center" id="idDuplicateButton">중복확인</button>
@@ -31,7 +33,7 @@ const content = `
                                 <input type="text" class="form-control"  placeholder="전화번호 | 000-0000-0000" id="userTel">
                             </div>
                             <div class="text-center">
-                                <button type="button" class="btn btn-main text-center" id="signinButton">가입하기</button>
+                                <button type="submit" class="btn btn-main text-center" id="signinButton">가입하기</button>
                             </div>
                         </form>
                         <p class="mt-20">이미 계정이 있으신가요?<a href="/login" class="textCoffee"> 로그인</a></p>
@@ -47,12 +49,12 @@ const content = `
 const body = document.querySelector("body");
 makeTemplate(body, content);
 
-const userIdInput = document.querySelector("#userId");
-const userPwdInput = document.querySelector("#userPwd");
-const userPwdChkInput = document.querySelector("#userPwdChk");
-const userNameInput = document.querySelector("#userName");
-const emailIdInput = document.querySelector("#userEmail");
-const userTelInput = document.querySelector("#userTel");
+const idInput = document.querySelector("#userId");
+const pwInput = document.querySelector("#userPwd");
+const pwChkInput = document.querySelector("#userPwdChk");
+const nameInput = document.querySelector("#userName");
+const emailInput = document.querySelector("#userEmail");
+const phoneInput = document.querySelector("#userTel");
 
 const signinButton = document.querySelector("#signinButton"); // 회원가입 버튼
 const idDuplicateButton = document.querySelector("#idDuplicateButton"); // 아이디 중복체크 버튼
@@ -62,36 +64,34 @@ let idValidation = false; // 아이디 중복체크 통과상태
 const regexCheck = () => {
   // TODO : api 요청 보낼 때 변수명 똑같이 해서 보내기
 
-  const userId = userIdInput.value;
-  const userPwd = userPwdInput.value;
-  const userPwdChk = userPwdChkInput.value;
-  const userName = userNameInput.value;
-  const userEmail = emailIdInput.value;
-  const userTel = userTelInput.value;
+  const id = idInput.value;
+  const pw = pwInput.value;
+  const pwChk = pwChkInput.value;
+  const name = nameInput.value;
+  const email = emailInput.value;
+  const phone = phoneInput.value;
 
   // 유효성 체크
-  const idCheck = validateRegex.id.test(userId);
-  const pwdCheck = validateRegex.pw.test(userPwd);
-  const pwdDoubleCheck = userPwd == userPwdChk;
-  const emailCheck = validateRegex.email.test(userEmail);
-  const telCheck = validateRegex.tel.test(userTel);
+  const idCheck = validateRegex.id.test(id);
+  const pwdCheck = validateRegex.pw.test(pw);
+  const pwdDoubleCheck = pw === pwChk;
+  const emailCheck = validateRegex.email.test(email);
+  const telCheck = validateRegex.tel.test(phone);
 
-  if (!userId.length) {
+  if (!idInput.value) {
     alert("아이디를 입력해주세요.");
-    userIdInput.focus();
-    return;
+    return g.centerFocus(idInput.id);
   }
+
   if (!idCheck) {
     alert("아이디는 영소문자 및 숫자, 8자 이상 12자 이하로 입력해주세요.");
-    userIdInput.focus();
-    return;
+    return g.centerFocus(idInput.id);
   }
 
   // 아이디 중복체크
   if (!idValidation) {
     alert("아이디 중복확인이 필요합니다.");
-    idDuplicateButton.focus();
-    return;
+    return g.centerFocus(idDuplicateButton.id);
   }
 
   // 유효성 검사
@@ -99,66 +99,60 @@ const regexCheck = () => {
     alert(
       "비밀번호는 최소 8자, 하나 이상의 대소문자와 숫자, 특수문자를 포함해야 합니다."
     );
-    userPwdInput.focus();
-    return;
+    return g.centerFocus(pwInput.id);
   }
   if (!pwdDoubleCheck) {
     alert("비밀번호가 일치하지 않습니다.");
-    userPwdChkInput.focus();
-    return;
+    return g.centerFocus(pwChkInput.id);
   }
 
-  if (!userName.length) {
+  if (!name.value) {
     alert("이름을 입력해주세요.");
-    userNameInput.focus();
-    return;
+    return g.centerFocus(nameInput.id);
   }
 
-  if (!userEmail.length) {
+  if (!email.value) {
     alert("이메일을 입력해주세요.");
-    emailIdInput.focus();
-    return;
+    return g.centerFocus(emailInput.id);
   }
+
   if (!emailCheck) {
     alert("올바른 이메일 형식이 아닙니다. 다시 확인해주세요.");
-    emailIdInput.focus();
-    return;
+    return g.centerFocus(emailInput.id);
   }
 
-  if (!userTel.length) {
+  if (!phone.value) {
     alert("전화번호를 입력해주세요.");
-    userTelInput.focus();
-    return;
+    return g.centerFocus(phoneInput.id);
   }
   if (!telCheck) {
     alert("올바른 전화번호 형식이 아닙니다. 다시 확인해주세요.");
-    userTelInput.focus();
-    return;
+    return g.centerFocus(phoneInput.id);
   }
 
   // 회원가입 정보
   const registerInfo = {
-    id: userId,
-    pw: userPwd,
-    name: userName,
-    email: userEmail,
-    phone: userTel,
+    id,
+    pw,
+    name,
+    email,
+    phone,
   };
 
   postRegister(registerInfo);
-  window.location.href = "/register/complete";
 };
 
 // 아이디창 데이터 변경 시
-userIdInput.addEventListener("input", () => {
+idInput.addEventListener("input", () => {
   idValidation = false; // 아이디 중복체크 통과상태 false로 변경
 });
 
 // 아이디 중복체크
-const idDuplicateCheck = async () => {
-  const userId = userIdInput.value;
+const idDuplicateCheck = async (idInput) => {
+  // const userId = userIdInput.value;
+  const id = idInput.value;
 
-  const idDupStatus = await getIdDupStatus(userId); // 아이디 중복 상태값 받아오기
+  const idDupStatus = await Api.post("/auth/checkDupId", { id }); // 아이디 중복 상태값 받아오기
 
   // 아이디 중복체크
   if (idDupStatus.data) {
@@ -170,56 +164,27 @@ const idDuplicateCheck = async () => {
   }
 };
 
-// 아이디 중복체크 상태값 반환
-async function getIdDupStatus(id) {
-  const API_URL = `${API_END_POINT}/auth/checkDupId`;
-
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ id }),
-  });
-
-  // 응답 코드가 4XX 계열일 때 (400, 403 등)
-  if (!res.ok) {
-    const errorContent = await res.json();
-    const { reason } = errorContent;
-
-    throw new Error(reason);
-  }
-
-  const result = res.json();
-
-  return result;
-}
-
 // 회원가입 데이터 전송
-async function postRegister(registerInfo) {
-  const API_URL = `${API_END_POINT}/auth/register`;
-
-  const res = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(registerInfo),
-  });
-
-  // 응답 코드가 4XX 계열일 때 (400, 403 등)
-  if (!res.ok) {
-    const errorContent = await res.json();
-    const { reason } = errorContent;
-
-    throw new Error(reason);
+const postRegister = async (registerInfo) => {
+  const res = await Api.post("auth/register", registerInfo);
+  const data = await res.json();
+  if (data) {
+    g.redirectUserPage("/register/complete");
   }
-  const result = await res.json();
 
-  return result;
-}
+  return;
+};
 
-idDuplicateButton.addEventListener("click", idDuplicateCheck); // 중복체크 버튼
-signinButton.addEventListener("click", regexCheck); // 회원가입 버튼
+idDuplicateButton.addEventListener("click", () => idDuplicateCheck(idInput)); // 중복체크 버튼
+signinButton.addEventListener("click", function (event) {
+  event.preventDefault();
+  regexCheck();
+}); // 회원가입 버튼
+
+// 엔터키를 눌러도 회원가입이 가능하게 한다.
+let form = document.querySelector("#form");
+
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  regexCheck();
+});
