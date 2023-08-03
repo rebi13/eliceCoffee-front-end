@@ -31,7 +31,7 @@ const deliveryStatus = {
  * ID, PW, 전화번호, 이메일
  */
 const validateRegex = {
-  id: /^[a-z0-9]{8,12}$/,
+  id: /^[a-zA-Z0-9]{8,12}$/,
   pw: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
   email: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
   tel: /^\d{3}-\d{3,4}-\d{4}$/,

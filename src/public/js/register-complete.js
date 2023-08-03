@@ -11,12 +11,8 @@ const content = `
                     </div>
                     <div class="button">
                         <span>
-                            <div class="btn-group">
-                                <a href="/">홈으로</a>
-                            </div>
-                            <div class="btn-group">                    
-                                <a href="/login">로그인</a>    
-                            </div>
+                                <a class="btn-group" href="/">홈으로</a>
+                                <a class="btn-group" href="/login">로그인</a>    
                         </span>
                     </div>
                 </div>

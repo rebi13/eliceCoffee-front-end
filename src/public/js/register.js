@@ -1,5 +1,5 @@
 import { API_END_POINT } from "/constants/index.js";
-import { validateRegex } from "/constants/index.js"; // 정규표현식
+import { validateRegex } from "/constants/index.js";//"../constants/index.js"; // 정규표현식
 import { makeTemplate } from "./common/template.js";
 import g from "./common/common.js";
 import Api from "./common/api.js";
@@ -78,7 +78,7 @@ const regexCheck = () => {
   const emailCheck = validateRegex.email.test(email);
   const telCheck = validateRegex.tel.test(phone);
 
-  if (!idInput.value) {
+  if (!id) {
     alert("아이디를 입력해주세요.");
     return g.centerFocus(idInput.id);
   }
@@ -94,6 +94,11 @@ const regexCheck = () => {
     return g.centerFocus(idDuplicateButton.id);
   }
 
+  if(!pw) {
+    alert("비밀번호를 입력해주세요.");
+    return g.centerFocus(pwInput.id);
+  }
+
   // 유효성 검사
   if (!pwdCheck) {
     alert(
@@ -101,17 +106,23 @@ const regexCheck = () => {
     );
     return g.centerFocus(pwInput.id);
   }
+
+  if(!pwChk) {
+    alert("비밀번호를 입력해주세요.");
+    return g.centerFocus(pwChkInput.id);
+  }
+
   if (!pwdDoubleCheck) {
     alert("비밀번호가 일치하지 않습니다.");
     return g.centerFocus(pwChkInput.id);
   }
 
-  if (!name.value) {
+  if (!name) {
     alert("이름을 입력해주세요.");
     return g.centerFocus(nameInput.id);
   }
 
-  if (!email.value) {
+  if (!email) {
     alert("이메일을 입력해주세요.");
     return g.centerFocus(emailInput.id);
   }
@@ -121,7 +132,7 @@ const regexCheck = () => {
     return g.centerFocus(emailInput.id);
   }
 
-  if (!phone.value) {
+  if (!phone) {
     alert("전화번호를 입력해주세요.");
     return g.centerFocus(phoneInput.id);
   }
@@ -149,7 +160,7 @@ idInput.addEventListener("input", () => {
 
 // 아이디 중복체크
 const idDuplicateCheck = async (idInput) => {
-  // const userId = userIdInput.value;
+  // const userId = userIdIFnput.value;
   const id = idInput.value;
 
   const idDupStatus = await Api.post("/auth/checkDupId", { id }); // 아이디 중복 상태값 받아오기
@@ -167,9 +178,8 @@ const idDuplicateCheck = async (idInput) => {
 // 회원가입 데이터 전송
 const postRegister = async (registerInfo) => {
   const res = await Api.post("auth/register", registerInfo);
-  const data = await res.json();
-  if (data) {
-    g.redirectUserPage("/register/complete");
+  if (res.data) {
+    g.redirectUserPage("/register-complete");
   }
 
   return;

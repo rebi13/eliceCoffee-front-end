@@ -1,6 +1,7 @@
 import g from './common/common.js';
 import { makeTemplate } from "./common/template.js";
 import { deliveryStatus, API_END_POINT } from '../constants/index.js';
+import Api from './common/api.js';
 
 /* 렌더링 로직 */
 const body = document.querySelector("body");
@@ -73,7 +74,7 @@ function renderOrder(orderData) {
                 <p class="total-price">총액 : ${totalPrice}원</p>
                 <div>
                     <a 
-                        href="${canChangeOrder ? `order/edit?orderId=${_id}` : "#"}"
+                        href="${canChangeOrder ? `order-edit?orderId=${_id}` : "#"}"
                         class="btn btn-default modifyBtn"
                         data-status="${status}"
                         ${canChangeOrder ? "" : "disabled"}
@@ -114,7 +115,7 @@ function renderTable(orders) {
 
 function render(orders) {
     const isEmptyOrder = orders.length === 0;
-
+    console.log(orders);
     return `
         <main>
             <section class="page-header">
@@ -124,7 +125,7 @@ function render(orders) {
                             <div class="content">
                                 <h1 class="page-name">주문 목록</h1>
                                 <ol class="breadcrumb">
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="/">Home</a></li>
                                     <li class="active">주문 목록</li>
                                 </ol>
                             </div>
@@ -132,66 +133,62 @@ function render(orders) {
                     </div>
                 </div>
             </section>
-            ${isEmptyOrder ? emptyPage : renderTable(orders)}
+            ${!orders ? emptyPage : renderTable(orders)}
         </main>
     `;
 }
 
 /* 일반 함수 */
 async function init() {
-    try {
-        const result = await fetch(`${API_END_POINT}/orders`, { credentials: "include" }).then(res => res.json());
 
-        if (result.error !== null) {
-            throw new Error(result.error);
-        }
-        
-        makeTemplate(body, render(result.data));
+    const res = await Api.get('orders');
 
-        const cancelBtns = document.querySelectorAll('.cancelBtn');
-        cancelBtns.forEach((btn) => btn.addEventListener('click', handleCancelBtn));
+    makeTemplate(body, render(res.data));
 
-        const modifyBtns = document.querySelectorAll('.modifyBtn');
-        modifyBtns.forEach((btn) => btn.addEventListener('click', handleModifyBtn))
-    } catch(err) {
-        console.error(err);
-        alert("데이터를 받아오던 중 에러가 발생했습니다.");
-    }
+    const cancelBtns = document.querySelectorAll('.cancelBtn');
+    cancelBtns.forEach((btn) => btn.addEventListener('click', handleCancelBtn));
+
+    const modifyBtns = document.querySelectorAll('.modifyBtn');
+    modifyBtns.forEach((btn) => btn.addEventListener('click', handleModifyBtn))
 }
 
 function validateChangeOrder(status) {
-    const isCancelable = !(
-        "shipping" === status ||
-        "delivered" === status ||
-        "pending" === status ||
-        "canceled" === status
-    );
+      const isCancelable = ["결제완료", "배송준비중"].includes(deliveryStatus[status]);
+    // const isCancelable = !(
+    //     "shipping" === status ||
+    //     "delivered" === status ||
+    //     "pending" === status ||
+    //     "canceled" === status
+    // );
     
     return isCancelable;
 }
 
-async function cancelOrder(orderId, orderStatus) {
-    try {
-        const response = await fetch(`${API_END_POINT}/orders/${orderId}/cancel`, {
-            method: 'PUT',
-            credentials: 'include'
-        });
+async function cancelOrder(orderId) {
 
-        if (!response.ok) {
-            throw new Error("주문취소에 실패하였습니다.");
-        }
+    const res = await Api.patch(`/orders/${orderId}/cancel`);
 
-        if (deliveryStatus[orderStatus] === "배송준비중") {
-            window.alert("상품을 준비중이어서 관리자의 승인 여부에 따라 취소가 불가할 수 있습니다.");
-        } else {
-            window.alert("주문이 정상적으로 취소되었습니다.");
-        }
-        
+    console.log(res);
+    if(res.data) {
+        window.alert("주문이 정상적으로 취소되었습니다.");
         window.location.reload();
-    } catch (error) {
-        console.error(error);
-        alert(error.message);
     }
+    
+    // try {
+    //     const response = await fetch(`${API_END_POINT}/orders/${orderId}/cancel`, {
+    //         method: 'PUT',
+    //         credentials: 'include'
+    //     });
+
+    //     if (!response.ok) {
+    //         throw new Error("주문취소에 실패하였습니다.");
+    //     }
+    //     window.alert("주문이 정상적으로 취소되었습니다.");
+    //     window.location.reload();
+    // } catch (error) {
+    //     console.error(error);
+    //     alert(error.message);
+    // }
 }
 
 function handleModifyBtn(event) {
@@ -222,5 +219,5 @@ function handleCancelBtn(event) {
         return;
     }
 
-    cancelOrder(orderId, orderStatus);
+    cancelOrder(orderId);
 }

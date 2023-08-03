@@ -1,4 +1,4 @@
-import g from '../js/common/common.js';
+import g from './common/common.js';
 import { makeTemplate } from "./common/template.js";
 import { API_END_POINT, validateRegex } from "../constants/index.js";
 
@@ -110,7 +110,10 @@ async function updateOrder(newOrderData) {
         }
 
         alert("주문 정보가 정상적으로 변경되었습니다.");
-        g.redirectUserPage('/order');
+        // 뒤로가기 + 새로고침
+        location.href = document.referrer;
+        // history.back();
+        // g.redirectUserPage('/order');
     } catch (error) {
         console.error(error);
         alert("알 수 없는 에러가 발생하였습니다.");

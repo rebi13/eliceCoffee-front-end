@@ -71,9 +71,8 @@ form.addEventListener("submit", function (event) {
 
 const postLogin = async (id, pw) => {
   const res = await Api.post("auth/login", { id, pw });
-  const login = await res.json();
 
-  if (login.data.isLogin) {
+  if (res.data.isLogin) {
     g.redirectUserPage("/");
   }
 
