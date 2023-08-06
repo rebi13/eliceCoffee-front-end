@@ -34,9 +34,9 @@ const loginHTML = `
 const body = document.querySelector("body");
 makeTemplate(body, loginHTML);
 
-document
-  .getElementById("submitButton")
-  .addEventListener("click", function (event) {
+const submitBtn = document.getElementById("submitButton");
+
+submitBtn.addEventListener("click", function (event) {
     event.preventDefault();
 
     // 이메일과 비밀번호 입력란의 값을 변수에 저장
