@@ -1,22 +1,26 @@
 import { API_END_POINT } from "./../../constants/index.js";
 
-const post = async (url, data) => {
+const post = async (url, data = {}) => {
   const res = await fetch(`${API_END_POINT}/${url}`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     credentials: "include",
-    method: "POST",
     body: JSON.stringify(data),
   });
 
+  // 응답 코드가 4XX 계열일 때 (400, 403 등)
   if (!res.ok) {
-    const error = await res.json();
-    alert(error.errorMessage);
-    throw new Error(error.errorMessage);
+    const errorContent = await res.json();
+    const { errorMessage } = errorContent;
+    alert(errorMessage);
+    throw new Error(errorMessage);
   }
 
-  return res;
+  const result = res.json();
+
+  return result;
 };
 
 const get = async (url) => {
@@ -31,9 +35,9 @@ const get = async (url) => {
   // 응답 코드가 4XX 계열일 때 (400, 403 등)
   if (!res.ok) {
     const errorContent = await res.json();
-    const { reason } = errorContent;
-
-    throw new Error(reason);
+    const { errorMessage } = errorContent;
+    alert(errorMessage);
+    throw new Error(errorMessage);
   }
 
   const result = await res.json();
@@ -41,7 +45,7 @@ const get = async (url) => {
   return result;
 };
 
-const put = async (url, data) => {
+const put = async (url, data = {}) => {
   const res = await fetch(`${API_END_POINT}/${url}`, {
     headers: {
       "Content-Type": "application/json",
@@ -57,10 +61,12 @@ const put = async (url, data) => {
     throw new Error(error.errorMessage);
   }
 
-  return res;
+  const result = await res.json();
+
+  return result;
 };
 
-const patch = async (url, data) => {
+const patch = async (url, data = {}) => {
   const res = await fetch(`${API_END_POINT}/${url}`, {
     headers: {
       "Content-Type": "application/json",
@@ -70,13 +76,17 @@ const patch = async (url, data) => {
     body: JSON.stringify(data),
   });
 
+  // 응답 코드가 4XX 계열일 때 (400, 403 등)
   if (!res.ok) {
-    const error = await res.json();
-    alert(error.errorMessage);
-    throw new Error(error.errorMessage);
+    const errorContent = await res.json();
+    const { errorMessage } = errorContent;
+    alert(errorMessage);
+    throw new Error(errorMessage);
   }
 
-  return res;
+  const result = await res.json();
+
+  return result;
 };
 
 const del = async (url, data) => {

@@ -1,17 +1,19 @@
-import g from '../js/common/common.js';
+import g from "./common/common.js";
 import { makeTemplate } from "./common/template.js";
 import { API_END_POINT, validateRegex } from "../constants/index.js";
+import Api from "./common/api.js";
 
 /* 렌더링 로직 */
 let orderId = null;
+// 왜.. 전역으로?
 
-const body = document.querySelector('body');
+const body = document.querySelector("body");
 init();
 
 function render(orderData) {
-    const { address, receiver, receiverPhone } = orderData;
+  const { address, receiver, receiverPhone } = orderData;
 
-    return `
+  return `
         <main>
             <section class="signin-page account">
                 <div class="container">
@@ -67,94 +69,89 @@ function render(orderData) {
 
 /* 일반 함수 로직 */
 async function init() {
-    const params = new URLSearchParams(window.location.search);
-    orderId = params.get('orderId');
+  const params = new URLSearchParams(window.location.search);
+  orderId = params.get("orderId");
 
-    if (!orderId) {
-        alert("잘못된 접근입니다.");
-        g.redirectUserPage('/');
-        return;
+  if (!orderId) {
+    alert("잘못된 접근입니다.");
+    g.redirectUserPage("/");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_END_POINT}/orders`, {
+      credentials: "include",
+    }).then((res) => res.json());
+    const orderData = response.data.find((item) => item._id === orderId);
+
+    if (!orderData) {
+      throw new Error("해당 주문내역이 조회되지 않습니다.");
     }
 
-    try {
-        const response = await fetch(`${API_END_POINT}/orders`, { credentials: 'include' }).then(res => res.json());
-        const orderData = response.data.find(item => item._id === orderId);
+    makeTemplate(body, render(orderData));
 
-        if (!orderData) {
-            throw new Error("해당 주문내역이 조회되지 않습니다.");
-        }
-        
-        makeTemplate(body, render(orderData));
-
-        const formElem = document.querySelector('form');
-        formElem.addEventListener('submit', handleSubmit);
-    } catch (error) {
-        console.error(error);
-        alert("에러가 발생했습니다.");
-    }
+    const formElem = document.querySelector("form");
+    formElem.addEventListener("submit", handleSubmit);
+  } catch (error) {
+    console.error(error);
+    alert("에러가 발생했습니다.");
+  }
 }
 
 async function updateOrder(newOrderData) {
-    try {
-        const response = await fetch(`${API_END_POINT}/orders/${orderId}`, {
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: 'include',
-            body: JSON.stringify(newOrderData)
-        });
+  //TODO: put -> patch 변경(api도 변경해야되서 일단 보류)
+  const res = await Api.put(`orders/${orderId}`, newOrderData);
 
-        if (!response.ok) {
-            throw new Error("알 수 없는 에러가 발생하였습니다.");
-        }
-
-        alert("주문 정보가 정상적으로 변경되었습니다.");
-        g.redirectUserPage('/order');
-    } catch (error) {
-        console.error(error);
-        alert("알 수 없는 에러가 발생하였습니다.");
-    }
+  if (res.data) {
+    alert("주문 정보가 정상적으로 변경되었습니다.");
+    // 뒤로가기 + 새로고침
+    location.href = document.referrer;
+  }
 }
 
 function validateCheck(receiver, receiverPhone, address) {
-    if (!receiver) {
-        window.alert("수취인 이름을 입력해주세요.");
-        return;
-    }
+  if (!receiver) {
+    window.alert("수취인 이름을 입력해주세요.");
+    return;
+  }
 
-    if (!address) {
-        window.alert("배송받을 주소를 입력해주세요.");
-        return;
-    }
-    
-    if (!receiverPhone) {
-        window.alert("수취인의 연락처를 입력해주세요.");
-        return;
-    }
+  if (!address) {
+    window.alert("배송받을 주소를 입력해주세요.");
+    return;
+  }
 
-    if (!validateRegex.tel.test(receiverPhone)) {
-        window.alert("유효하지 않은 전화번호 형식입니다.");
-        return;
-    }
+  if (!receiverPhone) {
+    window.alert("수취인의 연락처를 입력해주세요.");
+    return;
+  }
 
-    return true;
+  if (!validateRegex.tel.test(receiverPhone)) {
+    window.alert("유효하지 않은 전화번호 형식입니다.");
+    return;
+  }
+
+  return true;
 }
 
 function handleSubmit(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    const shouldModify = window.confirm("주문을 수정하시겠습니까?");
+  const shouldModify = window.confirm("주문을 수정하시겠습니까?");
 
-    if (shouldModify) {
-        const receiver = event.target.name.value;
-        const receiverPhone = event.target.phoneNumber.value;
-        const address = event.target.address.value;
+  if (shouldModify) {
+    const receiver = event.target.name.value;
+    const receiverPhone = event.target.phoneNumber.value;
+    const address = event.target.address.value;
 
-        if (validateCheck(receiver, receiverPhone, address)) {
-            const newOrderData = { receiver, receiverPhone, address, isOrderCancel: false };
+    if (validateCheck(receiver, receiverPhone, address)) {
+      const newOrderData = {
+        receiver,
+        receiverPhone,
+        address,
+        isOrderCancel: false,
+      };
 
-            updateOrder(newOrderData);
-        }
+      updateOrder(newOrderData);
     }
+  }
 }

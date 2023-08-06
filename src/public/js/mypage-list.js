@@ -1,5 +1,6 @@
 import { makeTemplate } from "./common/template.js";
-import { rankImg, ranks, API_END_POINT } from '../constants/index.js';
+import { rankImg, ranks } from '../constants/index.js';
+import Api from "./common/api.js";
 
 /* 렌더링 로직 */
 const body = document.querySelector('body');
@@ -50,7 +51,7 @@ function render(userData) {
                             </div>
                             <div class="btn-wrapper">
                                 <div>
-                                    <a href="/order" class="btn btn-main btn-small">주문 내역</a>
+                                    <a href="/mypage/order-list" class="btn btn-main btn-small">주문 내역</a>
                                     <a href="/mypage/edit" class="btn btn-main btn-small">회원 정보</a>
                                 </div>
                             </div>
@@ -63,16 +64,8 @@ function render(userData) {
 }
 
 async function init() {
-    try {
-        const result = await fetch(`${API_END_POINT}/auth`, { credentials: "include" }).then(res => res.json());
 
-        if (result.error !== null) {
-            throw new Error(result.error);
-        }
-        
-        makeTemplate(body, render(result.data))
-    } catch(err) {
-        console.error(err);
-        alert("데이터를 받아오던 중 에러가 발생했습니다.");
-    }
+    const res = await Api.get('auth');
+
+    makeTemplate(body, render(res.data));
 }

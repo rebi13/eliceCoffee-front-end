@@ -37,8 +37,8 @@ function header() {
               <ul class="user-nav">
               ${
                 token
-                  ? `<li><a href='/mypage' class='btn btn-cart'></a></li>
-                  <li><a href='/cart' class='btn btn-user'></a></li>
+                  ? `<li><a href='/mypage' class='btn btn-user'></a></li>
+                  <li><a href='/cart' class='btn btn-cart'></a></li>
                   <li><a id='login-control-btn' href="/login">로그아웃</a></li>`
                   : `<li><a id='login-control-btn' href='/login'>로그인</a></li>`
               }
