@@ -74,8 +74,7 @@ fetch(API_URL)
     });
 
     // 장바구니에 담기
-    const setCartButton =
-      document.querySelector(".buy-button").firstElementChild;
+    const setCartButton = document.querySelector(".buy-button").firstElementChild;
     setCartButton.addEventListener("click", function () {
       const itemCount = document.querySelector("tr");
       const quantity = +document.querySelector("#option-count-input").value
@@ -93,18 +92,18 @@ fetch(API_URL)
           document.querySelector(".option-name").firstElementChild.textContent;
 
         const cartItem = {
-          categoryId: categoryId,
-          id: id,
-          description: description,
-          keyWord: keyWord,
-          name: name,
-          mainImage: mainImage,
-          subImage: subImage,
-          option: option,
-          price: price,
-          quantity: quantity,
+          categoryId,
+          id,
+          description,
+          keyWord,
+          name,
+          mainImage,
+          subImage,
+          option,
+          price,
+          quantity,
           check: false,
-          _id: _id,
+          _id,
         };
 
 
